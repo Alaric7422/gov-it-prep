@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Gov IT Prep | ติวสอบนักวิชาการคอมพิวเตอร์ปฏิบัติการ (กรมที่ดิน)</title>
+  <meta name="description" content="แพลตฟอร์มติวสอบข้าราชการตำแหน่งนักวิชาการคอมพิวเตอร์ปฏิบัติการ ปูพื้นฐานวิทยาการคอมพิวเตอร์ SQL Sandbox แผนภาพ Mermaid บัตรคำ และความรู้เฉพาะทางกรมที่ดิน">
+
+  <!-- Anti-FOUC blocking theme script (runs before stylesheets) -->
+  <script>
+    (function () {
+      var saved = null;
+      try {
+        saved = localStorage.getItem('gov_it_prep_theme');
+      } catch (e) {}
+      var osDark = false;
+      try {
+        osDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      } catch (e) {}
+      var meta = document.querySelector('meta[name="color-scheme"]');
+      var root = document.documentElement;
+      if (saved === 'dark') {
+        if (meta) meta.setAttribute('content', 'dark');
+        root.classList.add('theme-dark', 'dark');
+        root.setAttribute('data-theme', 'dark');
+      } else if (saved === 'light') {
+        if (meta) meta.setAttribute('content', 'light');
+        root.classList.add('theme-light');
+        root.setAttribute('data-theme', 'light');
+      } else {
+        if (meta) meta.setAttribute('content', 'light dark');
+        if (osDark) root.classList.add('dark');
+        root.setAttribute('data-theme', osDark ? 'dark' : 'light');
+      }
+    })();
+  </script>
+
+  <!-- Google Fonts: Prompt, Sarabun, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Prompt:wght@400;500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6.5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <!-- Custom Design System Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Tailwind CSS Play CDN (configured after load with darkMode: 'class' and preflight disabled) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (window.tailwind) {
+      tailwind.config = {
+        darkMode: 'class',
+        corePlugins: { preflight: false },
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Sarabun', 'system-ui', 'sans-serif'],
+              heading: ['Prompt', 'Sarabun', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace']
+            },
+            colors: {
+              canvas: 'var(--bg-canvas)',
+              surface: 'var(--bg-surface)',
+              primary: 'var(--color-primary)',
+              accent: 'var(--color-accent)',
+              borderc: 'var(--border-color)'
+            }
+          }
+        }
+      };
+    }
+  </script>
+
+  <!-- External Libraries: Mermaid v11, sql.js v1.10.3 (WASM), AlaSQL fallback -->
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alasql@4/dist/alasql.min.js"></script>
+
+  <!-- Core Registry & State -->
+  <script defer src="js/registry.js"></script>
+  <script defer src="js/state.js"></script>
+
+  <!-- Modular Lesson & Practice Data -->
+  <script defer src="js/data/core-1-hardware-os.js"></script>
+  <script defer src="js/data/core-2-database-sql.js"></script>
+  <script defer src="js/data/core-3-sad-sdlc.js"></script>
+  <script defer src="js/data/core-4-network-security.js"></script>
+  <script defer src="js/data/core-5-programming-logic.js"></script>
+  <script defer src="js/data/agencies/dol.js"></script>
+  <script defer src="js/data/flashcards.js"></script>
+  <script defer src="js/data/mock-exam.js"></script>
+
+  <!-- Interactive Engine Components -->
+  <script defer src="js/components/mermaid-helper.js"></script>
+  <script defer src="js/components/sql-engine.js"></script>
+  <script defer src="js/components/quiz-engine.js"></script>
+
+  <!-- SPA Views -->
+  <script defer src="js/views/dashboard.js"></script>
+  <script defer src="js/views/lesson-view.js"></script>
+  <script defer src="js/views/flashcards-view.js"></script>
+  <script defer src="js/views/sql-sandbox-view.js"></script>
+  <script defer src="js/views/mock-exam-view.js"></script>
+  <script defer src="js/views/guide-view.js"></script>
+
+  <!-- Main Router & App Controller -->
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">ข้ามไปยังเนื้อหาหลัก</a>
+
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="header-left">
+        <button
+          type="button"
+          id="mobile-menu-btn"
+          class="btn btn-secondary btn-sm mobile-only-btn"
+          aria-controls="app-sidebar"
+          aria-expanded="false"
+          aria-label="เปิดเมนูหลักบทเรียน"
+        >
+          <i class="fa-solid fa-bars" aria-hidden="true"></i>
+          <span>เมนู</span>
+        </button>
+
+        <a href="#dashboard" class="brand-link">
+          <span class="brand-mark" aria-hidden="true">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </span>
+          <span>
+            <span class="brand-title">Gov IT Prep</span>
+            <span class="brand-subtitle">นักวิชาการคอมพิวเตอร์ • กรมที่ดิน</span>
+          </span>
+        </a>
+      </div>
+
+      <div class="header-right">
+        <span id="header-progress-pill" class="badge-pill badge-primary hidden sm:inline-flex" title="ความคืบหน้าบทเรียน">
+          <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+          <span>0 / 8 บท</span>
+        </span>
+
+        <button
+          type="button"
+          id="theme-toggle-btn"
+          class="btn btn-secondary btn-sm"
+          aria-pressed="false"
+          aria-label="สลับโหมดสีหน้าจอ"
+        >
+          <i class="fa-solid fa-moon" data-theme-icon aria-hidden="true"></i>
+          <span data-theme-label class="hidden sm:inline">โหมดมืด</span>
+        </button>
+
+        <button
+          type="button"
+          id="reset-progress-btn"
+          class="btn btn-ghost btn-sm"
+          title="ล้างความคืบหน้าทั้งหมด"
+          aria-label="ล้างความคืบหน้าทั้งหมด"
+        >
+          <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+          <span class="hidden md:inline">รีเซ็ตข้อมูล</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <div id="sidebar-backdrop" class="sidebar-backdrop" aria-hidden="true"></div>
+
+      <aside id="app-sidebar" class="app-sidebar" aria-label="แถบนำทางหลักสูตร">
+        <div class="sidebar-header-mobile">
+          <span class="font-heading font-semibold text-sm">เมนูบทเรียนและเครื่องมือ</span>
+          <button
+            type="button"
+            id="sidebar-close-btn"
+            class="btn btn-ghost btn-sm"
+            aria-label="ปิดเมนู"
+          >
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+        <nav id="sidebar-nav" aria-label="เมนูหลักบทเรียน"></nav>
+      </aside>
+
+      <main id="main-content" class="app-main" tabindex="-1">
+        <div class="view-container">
+          <section id="view-dashboard" class="spa-view" aria-label="หน้าหลักภาพรวมการเรียนรู้"></section>
+          <section id="view-lesson" class="spa-view inactive" aria-label="เนื้อหาบทเรียน"></section>
+          <section id="view-flashcards" class="spa-view inactive" aria-label="บัตรคำศัพท์ทบทวนความจำ"></section>
+          <section id="view-sql-sandbox" class="spa-view inactive" aria-label="ลานซ้อมคำสั่ง SQL"></section>
+          <section id="view-mock-exam" class="spa-view inactive" aria-label="ห้องสอบจำลองเสมือนจริง"></section>
+          <section id="view-guide" class="spa-view inactive" aria-label="คู่มือ GitHub Pages และการขยายระบบ"></section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div id="live-announcer" class="visually-hidden" aria-live="polite"></div>
+
+  <!-- Native Confirm Reset Dialog -->
+  <dialog id="confirm-reset-dialog" class="gov-dialog" aria-labelledby="reset-dialog-title">
+    <div class="gov-dialog-inner">
+      <div class="gov-dialog-header">
+        <h2 id="reset-dialog-title" class="text-lg font-semibold flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-accent-token" aria-hidden="true"></i>
+          <span>ยืนยันการล้างความคืบหน้า</span>
+        </h2>
+        <button type="button" class="btn btn-ghost btn-sm" data-dialog-close aria-label="ปิดหน้าต่าง">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <p class="text-muted">
+        การดำเนินการนี้จะล้างประวัติบทเรียนที่เรียนจบ คะแนนแบบฝึกหัด สถานะบัตรคำ และประวัติข้อสอบจำลองทั้งหมดออกจากเบราว์เซอร์นี้ (ค่าโหมดสีหน้าจอจะยังอยู่)
+      </p>
+      <div class="gov-dialog-actions">
+        <button type="button" id="confirm-reset-cancel" class="btn btn-secondary" data-dialog-close>
+          ยกเลิก
+        </button>
+        <button type="button" id="confirm-reset-accept" class="btn btn-danger">
+          <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+          <span>ล้างข้อมูลทั้งหมด</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Native Image Lightbox Dialog -->
+  <dialog id="image-lightbox-dialog" class="gov-dialog gov-dialog-wide" aria-labelledby="lightbox-caption">
+    <div class="gov-dialog-inner">
+      <div class="gov-dialog-header">
+        <h2 id="lightbox-title" class="text-base font-semibold">ภาพประกอบขนาดเต็ม</h2>
+        <button type="button" id="lightbox-close-btn" class="btn btn-secondary btn-sm" data-dialog-close aria-label="ปิดภาพขนาดเต็ม">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          <span>ปิด</span>
+        </button>
+      </div>
+      <figure>
+        <img id="lightbox-img" class="lightbox-img" alt="">
+        <figcaption id="lightbox-caption" class="mt-3 text-sm text-muted"></figcaption>
+      </figure>
+    </div>
+  </dialog>
+</body>
+</html>

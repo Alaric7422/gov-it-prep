@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="dol-workflow-title dol-workflow-desc">
+  <title id="dol-workflow-title">แผนภาพสถาปัตยกรรมบริการดิจิทัลและโครงสร้างการทำงานกรมที่ดิน</title>
+  <desc id="dol-workflow-desc">ภาพประกอบแสดงการเชื่อมโยงระหว่างแอป e-QLands บนมือถือ เคาน์เตอร์สำนักงานที่ดิน และเครือข่ายศูนย์กลางกรมที่ดินกับสำนักงานที่ดินทั่วประเทศ 462 แห่ง</desc>
+  <defs>
+    <pattern id="draft-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#D5E1DD" stroke-width="0.9" opacity="0.65"/>
+      <path d="M 160 0 L 0 0 0 160" fill="none" stroke="#BFD1CB" stroke-width="1.4" opacity="0.7"/>
+    </pattern>
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F4F7F6"/>
+      <stop offset="100%" stop-color="#EAF1EE"/>
+    </linearGradient>
+    <linearGradient id="emerald-card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0F5E4D"/>
+      <stop offset="100%" stop-color="#0A4538"/>
+    </linearGradient>
+    <filter id="soft-shadow" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#122026" flood-opacity="0.10"/>
+    </filter>
+    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0F5E4D"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#D97706"/>
+    </marker>
+  </defs>
+
+  <!-- Canvas & Drafting Grid -->
+  <rect width="1200" height="675" fill="url(#bg-grad)"/>
+  <rect width="1200" height="675" fill="url(#draft-grid)"/>
+
+  <!-- Decorative Survey Corner Brackets -->
+  <path d="M 28 56 L 28 28 L 56 28" fill="none" stroke="#0F5E4D" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 1144 28 L 1172 28 L 1172 56" fill="none" stroke="#0F5E4D" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 28 619 L 28 647 L 56 647" fill="none" stroke="#0F5E4D" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 1144 647 L 1172 647 L 1172 619" fill="none" stroke="#0F5E4D" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Header Banner -->
+  <rect x="48" y="34" width="1104" height="68" rx="14" fill="#FFFFFF" stroke="#D5E1DD" stroke-width="1.5" filter="url(#soft-shadow)"/>
+  <rect x="64" y="48" width="40" height="40" rx="10" fill="#0F5E4D"/>
+  <path d="M 74 74 L 84 58 L 94 74 Z M 78 70 L 90 70" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round"/>
+  <circle cx="84" cy="56" r="2.5" fill="#F59E0B"/>
+  <text x="118" y="67" font-family="'Prompt', 'Sarabun', sans-serif" font-size="22" font-weight="700" fill="#122026">โครงสร้างบริการและระบบงานดิจิทัล กรมที่ดิน (Department of Lands)</text>
+  <text x="118" y="90" font-family="'Sarabun', sans-serif" font-size="14" fill="#465D57">เชื่อมต่อประชาชน • เคาน์เตอร์ 462 สำนักงานทั่วประเทศ • ศูนย์ข้อมูลกลางและมาตรฐานทะเบียนที่ดิน</text>
+  <rect x="944" y="51" width="190" height="34" rx="17" fill="#FEF3C7" stroke="#D97706" stroke-width="1.2"/>
+  <text x="1039" y="73" text-anchor="middle" font-family="'Prompt', 'Sarabun', sans-serif" font-size="13" font-weight="600" fill="#92400E">สังกัดกระทรวงมหาดไทย</text>
+
+  <!-- Step 1: Left Panel — Citizen & e-QLands Mobile Queue -->
+  <g transform="translate(56, 134)" filter="url(#soft-shadow)">
+    <rect width="300" height="468" rx="18" fill="#FFFFFF" stroke="#D5E1DD" stroke-width="1.5"/>
+    <rect width="300" height="44" rx="18" fill="#0F5E4D"/>
+    <rect y="26" width="300" height="18" fill="#0F5E4D"/>
+    <text x="150" y="28" text-anchor="middle" font-family="'Prompt', 'Sarabun', sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">1. ประชาชน &amp; e-QLands</text>
+
+    <!-- Smartphone Mockup -->
+    <rect x="64" y="64" width="172" height="296" rx="22" fill="#122026" stroke="#2D4440" stroke-width="3"/>
+    <rect x="74" y="82" width="152" height="258" rx="14" fill="#F4F7F6"/>
+    <rect x="122" y="70" width="56" height="6" rx="3" fill="#3B534D"/>
+
+    <!-- Mobile App Top Bar -->
+    <rect x="74" y="82" width="152" height="42" rx="10" fill="#0F5E4D"/>
+    <text x="150" y="101" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">SmartLands Plus+</text>
+    <text x="150" y="116" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="10" fill="#A7F3D0">จองคิวออนไลน์ e-QLands</text>
+
+    <!-- Ticket Card Inside Mobile -->
+    <rect x="84" y="134" width="132" height="132" rx="10" fill="#FFFFFF" stroke="#D5E1DD" stroke-width="1.2"/>
+    <rect x="94" y="142" width="70" height="16" rx="8" fill="#FEF3C7"/>
+    <text x="129" y="153" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="9.5" font-weight="600" fill="#B45309">คิวออนไลน์ Q-042</text>
+    <text x="94" y="172" font-family="'Sarabun', sans-serif" font-size="10.5" font-weight="700" fill="#122026">โอนขายโฉนด น.ส.4 จ.</text>
+    <text x="94" y="186" font-family="'Sarabun', sans-serif" font-size="9.5" fill="#465D57">แนบเอกสารล่วงหน้า: ผ่านแล้ว</text>
+
+    <!-- Stylized QR Code -->
+    <g transform="translate(119, 196)">
+      <rect width="62" height="62" rx="6" fill="#F4F7F6" stroke="#D5E1DD"/>
+      <rect x="7" y="7" width="16" height="16" fill="none" stroke="#0F5E4D" stroke-width="3"/>
+      <rect x="12" y="12" width="6" height="6" fill="#0F5E4D"/>
+      <rect x="39" y="7" width="16" height="16" fill="none" stroke="#0F5E4D" stroke-width="3"/>
+      <rect x="44" y="12" width="6" height="6" fill="#0F5E4D"/>
+      <rect x="7" y="39" width="16" height="16" fill="none" stroke="#0F5E4D" stroke-width="3"/>
+      <rect x="12" y="44" width="6" height="6" fill="#0F5E4D"/>
+      <rect x="28" y="10" width="5" height="5" fill="#D97706"/>
+      <rect x="28" y="21" width="6" height="6" fill="#122026"/>
+      <rect x="29" y="31" width="10" height="6" fill="#0F5E4D"/>
+      <rect x="42" y="32" width="12" height="5" fill="#122026"/>
+      <rect x="30" y="43" width="8" height="12" fill="#D97706"/>
+      <rect x="44" y="44" width="10" height="10" fill="#0F5E4D"/>
+    </g>
+
+    <!-- Mobile Feature Pills -->
+    <rect x="84" y="276" width="132" height="24" rx="6" fill="#E6F4F1"/>
+    <text x="150" y="292" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="10" font-weight="600" fill="#0F5E4D">ตรวจรูปแปลง LandsMaps</text>
+    <rect x="84" y="306" width="132" height="24" rx="6" fill="#FEF3C7"/>
+    <text x="150" y="322" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="10" font-weight="600" fill="#92400E">คำนวณค่าธรรมเนียม/ภาษี</text>
+
+    <!-- Summary Badges Bottom -->
+    <rect x="22" y="378" width="256" height="70" rx="10" fill="#F4F7F6" stroke="#D5E1DD"/>
+    <text x="150" y="401" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="13" font-weight="600" fill="#0F5E4D">ลดเวลารอคอยหน้าเคาน์เตอร์</text>
+    <text x="150" y="421" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="12" fill="#3B534D">18+ บริการดิจิทัลครบวงจร</text>
+    <text x="150" y="437" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="11" fill="#5D746D">นัดหมายล่วงหน้า • ตรวจสอบเอกสารก่อนยื่น</text>
+  </g>
+
+  <!-- Connector 1 -> 2 -->
+  <path d="M 362 340 L 420 340" fill="none" stroke="#D97706" stroke-width="3.5" stroke-dasharray="6 4" marker-end="url(#arrow-amber)"/>
+  <rect x="366" y="306" width="54" height="22" rx="11" fill="#FEF3C7" stroke="#D97706"/>
+  <text x="393" y="321" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="10.5" font-weight="700" fill="#92400E">QR คิว</text>
+
+  <!-- Step 2: Center Panel — Land Office Counter & Verification Workstation -->
+  <g transform="translate(428, 134)" filter="url(#soft-shadow)">
+    <rect width="344" height="468" rx="18" fill="#FFFFFF" stroke="#0F5E4D" stroke-width="2"/>
+    <rect width="344" height="44" rx="18" fill="url(#emerald-card)"/>
+    <rect y="26" width="344" height="18" fill="#0F5E4D"/>
+    <text x="172" y="28" text-anchor="middle" font-family="'Prompt', 'Sarabun', sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">2. เคาน์เตอร์สำนักงานที่ดิน</text>
+
+    <!-- Counter Architectural Scene -->
+    <rect x="22" y="64" width="300" height="196" rx="12" fill="#F4F7F6" stroke="#D5E1DD"/>
+
+    <!-- Digital Display Screen (Officer Side) -->
+    <rect x="74" y="82" width="196" height="106" rx="8" fill="#122026" stroke="#0F5E4D" stroke-width="2"/>
+    <rect x="82" y="90" width="180" height="84" rx="4" fill="#162930"/>
+    <!-- Map Parcel Graphic on Monitor -->
+    <polygon points="96,120 132,102 162,116 150,154 102,152" fill="#0F5E4D" fill-opacity="0.65" stroke="#2DD4BF" stroke-width="2"/>
+    <circle cx="132" cy="102" r="3" fill="#F59E0B"/>
+    <circle cx="162" cy="116" r="3" fill="#F59E0B"/>
+    <circle cx="150" cy="154" r="3" fill="#F59E0B"/>
+    <circle cx="102" cy="152" r="3" fill="#F59E0B"/>
+    <rect x="174" y="102" width="76" height="10" rx="3" fill="#2DD4BF" opacity="0.85"/>
+    <rect x="174" y="120" width="60" height="7" rx="3" fill="#94B0A8" opacity="0.8"/>
+    <rect x="174" y="134" width="68" height="7" rx="3" fill="#94B0A8" opacity="0.6"/>
+    <rect x="174" y="149" width="52" height="14" rx="4" fill="#D97706"/>
+    <text x="200" y="159" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="8.5" font-weight="700" fill="#FFFFFF">อนุมัติโอน</text>
+
+    <!-- Monitor Stand & Desk -->
+    <rect x="158" y="188" width="28" height="14" fill="#465D57"/>
+    <rect x="38" y="202" width="268" height="18" rx="5" fill="#0F5E4D"/>
+    <rect x="46" y="220" width="252" height="30" rx="4" fill="#E2ECE8"/>
+    <text x="172" y="239" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="11.5" font-weight="700" fill="#0F5E4D">เคาน์เตอร์จดทะเบียนสิทธิและนิติกรรม</text>
+
+    <!-- Document + Garuda Stamp Badge -->
+    <g transform="translate(26, 276)">
+      <rect width="140" height="90" rx="10" fill="#FFFFFF" stroke="#D5E1DD" stroke-width="1.2"/>
+      <circle cx="32" cy="34" r="16" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.5"/>
+      <text x="32" y="38" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="10" font-weight="700" fill="#B91C1C">น.ส.4</text>
+      <text x="58" y="30" font-family="'Prompt', sans-serif" font-size="12" font-weight="700" fill="#122026">ตรวจสารบบ</text>
+      <text x="58" y="46" font-family="'Sarabun', sans-serif" font-size="10.5" fill="#465D57">ยืนยันตัวตนจริง</text>
+      <rect x="14" y="60" width="112" height="18" rx="4" fill="#E6F4F1"/>
+      <text x="70" y="73" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="10" font-weight="600" fill="#0F5E4D">จดทะเบียนต่างสำนักงานได้</text>
+    </g>
+
+    <!-- Survey & GIS Check Card -->
+    <g transform="translate(178, 276)">
+      <rect width="140" height="90" rx="10" fill="#FFFFFF" stroke="#D5E1DD" stroke-width="1.2"/>
+      <circle cx="32" cy="34" r="16" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+      <text x="32" y="38" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="10" font-weight="700" fill="#B45309">GIS</text>
+      <text x="58" y="30" font-family="'Prompt', sans-serif" font-size="12" font-weight="700" fill="#122026">งานรังวัด</text>
+      <text x="58" y="46" font-family="'Sarabun', sans-serif" font-size="10.5" fill="#465D57">ระวางรูปแปลง</text>
+      <rect x="14" y="60" width="112" height="18" rx="4" fill="#FEF3C7"/>
+      <text x="70" y="73" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="10" font-weight="600" fill="#92400E">อ้างอิงพิกัดมาตรฐาน</text>
+    </g>
+
+    <!-- Bottom Regional Counter Stat -->
+    <rect x="24" y="380" width="296" height="68" rx="10" fill="#0F5E4D"/>
+    <text x="172" y="405" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="15" font-weight="700" fill="#FFFFFF">เครือข่ายบริการ 462 แห่งทั่วไทย</text>
+    <text x="172" y="427" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="11.5" fill="#D1FAE5">กทม.+สาขา 17 • จังหวัด 76 • สาขา 346 • ส่วนแยก 23</text>
+  </g>
+
+  <!-- Connector 2 -> 3 -->
+  <path d="M 778 340 L 836 340" fill="none" stroke="#0F5E4D" stroke-width="3.5" marker-end="url(#arrow-emerald)"/>
+  <rect x="780" y="306" width="54" height="22" rx="11" fill="#E6F4F1" stroke="#0F5E4D"/>
+  <text x="807" y="321" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="10" font-weight="700" fill="#0F5E4D">VPN</text>
+
+  <!-- Step 3: Right Panel — Central Headquarters & Connected Offices -->
+  <g transform="translate(844, 134)" filter="url(#soft-shadow)">
+    <rect width="300" height="468" rx="18" fill="#FFFFFF" stroke="#D5E1DD" stroke-width="1.5"/>
+    <rect width="300" height="44" rx="18" fill="#D97706"/>
+    <rect y="26" width="300" height="18" fill="#D97706"/>
+    <text x="150" y="28" text-anchor="middle" font-family="'Prompt', 'Sarabun', sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">3. ส่วนกลาง &amp; ศูนย์ข้อมูลกลาง</text>
+
+    <!-- Central HQ Box -->
+    <rect x="24" y="64" width="252" height="114" rx="12" fill="#122026"/>
+    <text x="150" y="88" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="13.5" font-weight="700" fill="#2DD4BF">ส่วนกลาง กรมที่ดิน (แจ้งวัฒนะ)</text>
+    <rect x="38" y="100" width="224" height="28" rx="6" fill="#1B323B" stroke="#2DD4BF" stroke-width="0.8"/>
+    <text x="150" y="118" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="11" font-weight="600" fill="#E6F0EE">สำนักเทคโนโลยีสารสนเทศ (สทส.)</text>
+    <rect x="38" y="134" width="108" height="30" rx="6" fill="#1B323B"/>
+    <text x="92" y="153" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="10" fill="#FDE68A">สำนักทะเบียนที่ดิน</text>
+    <rect x="154" y="134" width="108" height="30" rx="6" fill="#1B323B"/>
+    <text x="208" y="153" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="10" fill="#FDE68A">สำนักการรังวัด/แผนที่</text>
+
+    <!-- Network Lines from HQ to Provincial Nodes -->
+    <line x1="150" y1="178" x2="150" y2="210" stroke="#0F5E4D" stroke-width="2.5"/>
+    <line x1="72" y1="210" x2="228" y2="210" stroke="#0F5E4D" stroke-width="2.5"/>
+    <line x1="72" y1="210" x2="72" y2="232" stroke="#0F5E4D" stroke-width="2.5"/>
+    <line x1="150" y1="210" x2="150" y2="232" stroke="#0F5E4D" stroke-width="2.5"/>
+    <line x1="228" y1="210" x2="228" y2="232" stroke="#0F5E4D" stroke-width="2.5"/>
+    <circle cx="150" cy="210" r="5" fill="#D97706"/>
+
+    <!-- Provincial Hub Cards -->
+    <rect x="24" y="232" width="92" height="72" rx="10" fill="#E6F4F1" stroke="#0F5E4D"/>
+    <text x="70" y="258" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="11.5" font-weight="700" fill="#0F5E4D">ภาคเหนือ</text>
+    <text x="70" y="276" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="10" fill="#122026">เชียงใหม่</text>
+    <text x="70" y="291" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="9.5" fill="#465D57">เชื่อมสารบบแล้ว</text>
+
+    <rect x="122" y="232" width="56" height="72" rx="10" fill="#FEF3C7" stroke="#D97706"/>
+    <text x="150" y="258" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="11" font-weight="700" fill="#92400E">กลาง</text>
+    <text x="150" y="276" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="10" fill="#122026">กทม.</text>
+    <text x="150" y="291" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="9.5" fill="#465D57">17 แห่ง</text>
+
+    <rect x="184" y="232" width="92" height="72" rx="10" fill="#E6F4F1" stroke="#0F5E4D"/>
+    <text x="230" y="258" text-anchor="middle" font-family="'Prompt', sans-serif" font-size="11.5" font-weight="700" fill="#0F5E4D">อีสาน/ใต้</text>
+    <text x="230" y="276" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="10" fill="#122026">ขอนแก่น ภูเก็ต</text>
+    <text x="230" y="291" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="9.5" fill="#465D57">ออนไลน์ข้ามเขต</text>
+
+    <!-- 4 Missions Box -->
+    <rect x="24" y="320" width="252" height="128" rx="10" fill="#F4F7F6" stroke="#D5E1DD"/>
+    <text x="38" y="344" font-family="'Prompt', sans-serif" font-size="12.5" font-weight="700" fill="#0F5E4D">4 พันธกิจหลักกรมที่ดิน</text>
+    <text x="38" y="366" font-family="'Sarabun', sans-serif" font-size="11" fill="#122026">1. คุ้มครองสิทธิด้านที่ดินตามกฎหมาย</text>
+    <text x="38" y="386" font-family="'Sarabun', sans-serif" font-size="11" fill="#122026">2. บูรณาการออกโฉนดอย่างเป็นเอกภาพ</text>
+    <text x="38" y="406" font-family="'Sarabun', sans-serif" font-size="11" fill="#122026">3. ศูนย์ข้อมูลที่ดินและแผนที่แห่งชาติ</text>
+    <text x="38" y="426" font-family="'Sarabun', sans-serif" font-size="11" fill="#122026">4. บริการทะเบียนที่ดินทันสมัยออนไลน์</text>
+  </g>
+
+  <!-- Footer Status Bar -->
+  <text x="600" y="640" text-anchor="middle" font-family="'Sarabun', sans-serif" font-size="13" fill="#465D57">สถาปัตยกรรมภาพรวม: เชื่อมโยงระบบบริการประชาชน ส่วนภูมิภาคกว่า 460 แห่ง และศูนย์ข้อมูลกลางกรมที่ดินเป็นหนึ่งเดียว</text>
+</svg>
