@@ -18,6 +18,8 @@
     2. `DOL-02`: ประมวลกฎหมายที่ดิน พ.ศ. 2497, เปรียบเทียบเอกสารสิทธิ์ (น.ส.4 จ., น.ส.3 ก., น.ส.3, ส.ป.ก. 4-01), พ.ร.บ.อาคารชุด พ.ศ. 2522 และ พ.ร.บ.การจัดสรรที่ดิน พ.ศ. 2543
     3. `DOL-03`: ระบบสารสนเทศกรมที่ดิน (LandsMaps, พื้นฐาน GIS Vector/Raster/Layer Overlay/UTM, SmartLands Plus+, e-QLands และการจดทะเบียนออนไลน์ต่างสำนักงาน)
 * **แบบทดสอบท้ายบทพร้อมเฉลยละเอียดทุกตัวเลือก (ก / ข / ค / ง):** บทละ 8 ข้อ รวม 64 ข้อ
+* **คู่มือเจาะลึก Diagram & ออกแบบระบบสำหรับข้อเขียน (`#diagrams-lab`):** ปูพื้นฐานตั้งแต่ศูนย์ครบ 6 หมวด (`Flowchart`, `DFD Level 0/1`, `ER Diagram & 3NF`, `UML Use Case`, `Sequence & Class Diagram`, `System Architecture`) พร้อมแผนภาพ Mermaid และโจทย์ฝึกเขียนข้อสอบ 6 ข้อพร้อมแนวคิดและเกณฑ์ตรวจคำตอบ
+* **คู่มือไวยากรณ์ SQL ครบทุกคำสั่งสำหรับข้อเขียน (`#sql-guide`):** สรุปทุกคำสั่งครบ 8 บท (`Data Types & NULL`, `DDL`, `DML`, `SELECT`, `WHERE`, `Aggregate & GROUP BY/HAVING`, `JOIN หลายตาราง`, `Subquery & CASE`) เชื่อมต่อตรงกับฐานข้อมูลกรมที่ดิน 4 ตารางและปุ่มส่งคำสั่งไปรันใน SQL Sandbox พร้อมโจทย์ข้อเขียน SQL 6 ข้อ
 * **ลานซ้อม SQL แบบ Dual-Engine (`sql.js` WASM + `AlaSQL` Fallback):** จำลองฐานข้อมูลกรมที่ดิน 4 ตาราง (`land_offices`, `users`, `land_plots`, `transactions`) พร้อมโจทย์ฝึกหัด 10 ข้อตั้งแต่พื้นฐานจนถึง `JOIN`, `GROUP BY`, `HAVING` และ `Subquery`
 * **บัตรคำทบทวน 3 มิติ (Flashcards 45 ใบ):** แบ่งเป็น 4 ชุด (`Port & Protocol`, `คำย่อ IT & กฎหมายไซเบอร์`, `เอกสารสิทธิ์ & กฎหมายที่ดิน`, `ระบบดิจิทัล & GIS กรมที่ดิน`)
 * **ข้อสอบจำลองจับเวลาเสมือนจริง (Mock Exam 50 ข้อ / 60 นาที):** แบ่งสัดส่วน Core IT 25 ข้อ + กรมที่ดิน 25 ข้อ เลือกได้ทั้งโหมดฝึกทำทีละข้อและโหมดสอบจริง พร้อมวิเคราะห์คะแนนแยกหมวดและคำอธิบายครบทั้ง 4 ตัวเลือก
@@ -57,6 +59,8 @@ Gov IT Prep/
     │   ├── core-5-programming-logic.js # บทเรียน CORE-05 + ข้อสอบ 8 ข้อ
     │   ├── flashcards.js               # ข้อมูลบัตรคำ 45 ใบ (4 หมวด)
     │   ├── mock-exam.js                # ข้อสอบจำลอง 50 ข้อ (25 Core IT + 25 DOL)
+    │   ├── diagrams-guide.js           # คู่มือเจาะลึก Diagram 6 หมวด & โจทย์ข้อเขียน 6 ข้อ
+    │   ├── sql-guide.js                # คู่มือคำสั่ง SQL 8 บท & โจทย์ข้อเขียน SQL 6 ข้อ
     │   └── agencies/
     │       └── dol.js                  # โมดูลเฉพาะทางกรมที่ดิน (DOL-01..DOL-03)
     ├── components/
@@ -66,6 +70,8 @@ Gov IT Prep/
     └── views/
         ├── dashboard.js                # หน้าแรกสรุปความคืบหน้าและทางลัดเข้าบทเรียน
         ├── lesson-view.js              # หน้าแสดงเนื้อหาบทเรียน, SVG, Mermaid, SQL Mini Runner และ Quiz
+        ├── diagrams-view.js            # หน้าคู่มือเจาะลึก Diagram & ออกแบบระบบ (#diagrams-lab)
+        ├── sql-guide-view.js           # หน้าคู่มือคำสั่ง SQL ครบทุกคำสั่ง (#sql-guide)
         ├── flashcards-view.js          # หน้าพลิกการ์ดทบทวน 3D พร้อมกรองหมวดและสับไพ่
         ├── sql-sandbox-view.js         # ลานซ้อม SQL เต็มรูปแบบพร้อม Schema Explorer และ 10 โจทย์
         ├── mock-exam-view.js           # หน้าสอบจำลอง 50 ข้อ จับเวลา 60 นาที และรายงานผล

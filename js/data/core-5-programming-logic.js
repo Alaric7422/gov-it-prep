@@ -14,7 +14,7 @@
     order: 5,
     title: 'ตรรกะการเขียนโปรแกรม โครงสร้างควบคุม และโครงสร้างข้อมูล',
     shortTitle: 'เขียนโปรแกรม & โครงสร้างข้อมูล',
-    subtitle: 'ปูพื้นฐานตัวแปร ตัวดำเนินการ If-Else/Loops การไล่โค้ด Trace Table, Array, Stack (LIFO), Queue (FIFO), OOP และ Big-O อัลกอริทึม',
+    subtitle: 'ปูพื้นเขียนโปรแกรมจากศูนย์: Algorithm, ตัวแปร-Data Types, Compiler vs Interpreter, ตัวดำเนินการ (++i vs i++), If-Else/Loops + Trace Table, Data Structures (Stack/Queue/Tree/Hash), OOP และ Big-O',
     estimatedMinutes: 20,
     icon: 'fa-solid fa-code',
     heroVisual: {
@@ -27,33 +27,79 @@
       prompt: 'Clean flat isometric tech illustration in Cadastral GIS & Tech Studio palette (emerald #0F5E4D, amber #D97706, cream #F4F7F6). Visual programming logic studio showing clean floating blocks for If-Else branches, a circular For-Loop track, an indexed Array locker row, a vertical LIFO Stack of glowing plates, and a horizontal FIFO Queue conveyor belt. Crisp educational editorial vector style.'
     },
     summaryTakeaways: [
-      'ลำดับความสำคัญตัวดำเนินการ: วงเล็บ () → คูณ/หาร/Mod (* / %) → บวก/ลบ (+ -) → เปรียบเทียบ (> < ==) → NOT (!) → AND (&&) → OR (||)',
-      'ลูป while ตรวจสอบเงื่อนไขก่อนทำ (อาจไม่ทำเลย 0 รอบ), do-while ทำก่อนตรวจสอบ (ทำอย่างน้อย 1 รอบเสมอ), break = ออกจากลูปทันที, continue = ข้ามรอบนี้ไปรอบถัดไป',
-      'Array เข้าถึงข้อมูลด้วย Index (เริ่มที่ 0) ใช้เวลา O(1), Stack ใช้หลัก LIFO (เข้าทีหลังออกก่อน), Queue ใช้หลัก FIFO (มาก่อนออกก่อน)',
-      '4 เสาหลัก OOP (APIE): Encapsulation (ห่อหุ้มซ่อนข้อมูล), Inheritance (สืบทอดคลาส), Polymorphism (หลายรูปแบบ), Abstraction (นามธรรมซ่อนความซับซ้อน)',
-      'Binary Search ค้นหาได้เร็วระดับ O(log n) แต่มีเงื่อนไขบังคับว่าข้อมูลใน Array ต้องเรียงลำดับ (Sorted) แล้วเท่านั้น!'
+      'Programming คือการเขียนคำสั่งตาม Algorithm (ขั้นตอนแก้ปัญหาที่ชัดเจนและมีจุดจบ) โดยใช้ Compiler แปลรวดเดียวทั้งไฟล์ หรือ Interpreter แปลรันทีละบรรทัด และระวัง Error 3 แบบ: Syntax (ผิดไวยากรณ์), Runtime (พังกลางทางเช่นหาร 0), Logic (รันผ่านแต่คำตอบผิด)',
+      'ตัวดำเนินการต้องแม่น: Modulo (%) เอาเศษ, 7/2 แบบ Integer ได้ 3, ++i (บวกก่อนใช้) vs i++ (ใช้ก่อนค่อยบวก), ลำดับความสำคัญ () → ! → * / % → + - → เปรียบเทียบ → && → ||',
+      'ลูป while ตรวจเงื่อนไขก่อนทำ (0+ รอบ), do-while ทำก่อนตรวจ (อย่างน้อย 1 รอบเสมอ), switch-case ต้องใส่ break กันไหลทะลุ, และใช้ Trace Table ไล่ค่าตัวแปรทุกครั้งที่ทำข้อสอบลูป',
+      'Data Structures: Array เข้าถึง Index (เริ่มที่ 0) ใน O(1), Linked List เชื่อมด้วย Pointer แทรก-ลบไวแต่ไล่หาช้า O(n), Stack = LIFO (Push/Pop), Queue = FIFO (Enqueue/Dequeue), และมี BST กับ Hash Table O(1) ใช้ค้นหาไว',
+      'Function รับ Parameter/Argument แล้วคืน Return Value; Recursion ต้องมี Base Case กัน Stack Overflow; OOP มี 4 เสาหลัก (APIE); และ Binary Search วิ่งเร็ว O(log n) แต่ข้อมูลต้องเรียง (Sorted) แล้วเท่านั้น'
     ],
     sections: [
       {
         id: 'variables-operators',
         title: '1. ตัวแปร ชนิดข้อมูล ตัวดำเนินการ และตรรกศาสตร์',
         analogyBox: {
-          title: 'เปรียบเทียบให้เห็นภาพ: กล่องติดป้ายชื่อเก็บข้อมูล',
-          body: '<strong>ตัวแปร (Variable)</strong> เหมือน <strong>"กล่องเก็บของที่ติดป้ายชื่อไว้"</strong> แต่ละกล่องมีชนิดข้อมูล (Data Type) กำหนดไว้ว่าใส่ได้เฉพาะของประเภทไหน เช่น กล่อง <code>int</code> ใส่จำนวนเต็มอย่างจำนวนแปลงที่ดิน, กล่อง <code>float/double</code> ใส่ทศนิยมอย่างเนื้อที่ตารางวา, กล่อง <code>string</code> ใส่ข้อความเลขโฉนด, และกล่อง <code>boolean</code> เก็บได้แค่ค่าความจริง <code>true</code> หรือ <code>false</code>'
+          title: 'เปรียบเทียบให้เห็นภาพ: สูตรอาหาร กล่องติดป้ายชื่อ และล่ามแปลภาษา',
+          body: '• <strong>Algorithm:</strong> เหมือน <strong>"สูตรทำกับข้าวทีละข้อ"</strong> ที่ใครทำตามก็ได้ผลลัพธ์เดิมเสมอ<br>• <strong>ตัวแปร (Variable):</strong> เหมือน <strong>"กล่องเก็บของติดป้ายชื่อ"</strong> ที่มีชนิดข้อมูล (Data Type) บอกว่าใส่ของแบบไหน เช่น กล่อง <code>int</code> ใส่จำนวนเต็มอย่างจำนวนแปลงที่ดิน, <code>float/double</code> ใส่ทศนิยมอย่างเนื้อที่ตารางวา, <code>char/string</code> ใส่ตัวอักษร/ข้อความเลขโฉนด, และ <code>boolean</code> ใส่แค่ <code>true</code> หรือ <code>false</code><br>• <strong>Compiler vs Interpreter:</strong> <strong>Compiler</strong> เหมือน <em>แปลหนังสือทั้งเล่มให้เสร็จก่อนแล้วค่อยอ่านทีเดียว</em> (รันเร็วมาก!) ส่วน <strong>Interpreter</strong> เหมือน <em>ล่ามแปลสดทีละประโยค</em> (เริ่มทำงานไว แก้ทดสอบง่าย)'
         },
         bodyHtml: `
-<p>เวลาเจอข้อสอบอ่านโค้ด (Code Tracing) สิ่งที่ทำให้พลาดบ่อยที่สุดคือการคำนวณตัวดำเนินการผิดลำดับ และสับสนระหว่างการหารเอาเศษ (Modulo) กับตรรกศาสตร์ <code>AND / OR</code> ครับ</p>
+<p>น้องๆ ที่ยังไม่เคยเขียนโปรแกรมหรือลืมพื้นฐานไปแล้ว ไม่ต้องกลัวเรื่องอ่านโค้ดในข้อสอบครับ! เรามาปูพื้นตั้งแต่ความหมายของ <strong>การเขียนโปรแกรม (Programming)</strong> ชนิดข้อมูล ตัวแปลภาษา ข้อผิดพลาด ไปจนถึงการคำนวณตัวดำเนินการแบบไม่โดนหลอก</p>
 
-<h3>ตัวดำเนินการที่ต้องแม่น (Arithmetic &amp; Logical Operators)</h3>
+<h3>พื้นฐานที่ต้องรู้ก่อนอ่านโค้ด: Algorithm, ตัวแปร, Compiler และ Error 3 แบบ</h3>
 <ul>
-  <li><strong>Modulo (<code>%</code>):</strong> หารเอา<strong>เศษ</strong> เช่น <code>17 % 5 = 2</code> (5 คูณ 3 ได้ 15 เหลือเศษ 2) นิยมใช้เช็กเลขคู่/คี่ (<code>x % 2 == 0</code>)</li>
-  <li><strong>Integer Division vs Float Division:</strong> ในภาษา C / Java / SQLite หากนำจำนวนเต็มหารจำนวนเต็ม เช่น <code>7 / 2</code> จะได้ <code>3</code> (ปัดเศษทศนิยมทิ้ง!) ต้องใช้ <code>7.0 / 2</code> จึงจะได้ <code>3.5</code></li>
-  <li><strong><code>=</code> vs <code>==</code> vs <code>===</code>:</strong> <code>=</code> คือการกำหนดค่าใส่ตัวแปร (Assignment), <code>==</code> คือเปรียบเทียบความเท่ากัน, ส่วน <code>===</code> ใน JavaScript เช็กทั้งค่า<em>และ</em>ชนิดข้อมูล (เช่น <code>5 === '5'</code> ได้ <code>false</code>)</li>
+  <li><strong>Algorithm (อัลกอริทึม) &amp; Programming:</strong> <strong>Algorithm</strong> คือลำดับขั้นตอนวิธีแก้ปัญหาที่มีเหตุผล ชัดเจน ไม่กำกวม และมีจุดสิ้นสุด (ยังไม่ต้องเป็นโค้ด เขียนเป็นภาษาไทยหรือ Flowchart ก็ได้) ส่วน <strong>Programming</strong> คือการนำ Algorithm นั้นมาแปลงเขียนด้วยภาษาคอมพิวเตอร์ (เช่น Python, C, Java, JavaScript) ให้เครื่องทำตาม</li>
+  <li><strong>ตัวแปร (Variable) และชนิดข้อมูล (Data Type) หลัก 4 ชนิด:</strong>
+    <ul>
+      <li><code>int</code> (Integer): จำนวนเต็ม ไม่มีจุดทศนิยม เช่น <code>0</code>, <code>150</code>, <code>-10</code> (ใช้กับจำนวนคิว, อายุ, นับรอบลูป)</li>
+      <li><code>float / double</code>: เลขมีจุดทศนิยม เช่น <code>3.14</code>, <code>125.75</code> (ใช้คำนวณเงิน, พื้นที่ตารางวา, พิกัด GPS — <code>double</code> เก็บทศนิยมละเอียดกว่า <code>float</code>)</li>
+      <li><code>char / string</code>: <code>char</code> เก็บอักขระ 1 ตัว เช่น <code>'A'</code> ส่วน <code>string</code> เก็บข้อความยาว เช่น <code>"น.ส.4 จ."</code> (ระวัง: <code>"123"</code> ในเครื่องหมายคำพูดคือข้อความ ไม่ใช่ตัวเลข!)</li>
+      <li><code>boolean</code>: เก็บค่าความจริงได้ 2 ค่าเท่านั้นคือ <code>true</code> (จริง) หรือ <code>false</code> (เท็จ)</li>
+    </ul>
+  </li>
+  <li><strong>Compiler vs Interpreter ต่างกันยังไง?</strong>
+    <ul>
+      <li><strong>Compiler (เช่น C, C++, Go):</strong> แปล Source Code ทั้งไฟล์เป็นภาษาเครื่อง (เช่นไฟล์ <code>.exe</code>) <em>ก่อนรัน</em> → เวลาเปิดใช้งานจะทำงานเร็วมาก แต่ถ้ามีจุดผิดต้องแก้แล้วคอมไพล์ใหม่ทั้งหมด</li>
+      <li><strong>Interpreter (เช่น Python, JavaScript):</strong> อ่าน แปล และสั่งทำงาน <em>ทีละบรรทัด</em> → ทดสอบแก้โค้ดได้ไว ไม่ต้องรอ Build นาน แต่ความเร็วขณะรันจะช้ากว่าแบบ Compile (ส่วนภาษาอย่าง Java / C# ใช้แบบลูกผสม: Compile เป็น Bytecode กลางก่อน แล้วให้ VM แปลรัน)</li>
+    </ul>
+  </li>
+  <li><strong>ข้อผิดพลาด 3 ประเภท (Error Types) ที่ออกสอบบ่อย:</strong>
+    <ul>
+      <li><strong>Syntax Error (ผิดไวยากรณ์):</strong> พิมพ์ผิดกฎภาษา เช่น ลืมปิดวงเล็บ <code>)</code> หรือลืม <code>;</code> → ตัวแปลภาษาจับได้ทันที โปรแกรมไม่ยอมรัน</li>
+      <li><strong>Runtime Error (พังขณะทำงาน):</strong> ไวยากรณ์ถูกทุกอย่าง เริ่มรันได้ แต่เจอเหตุการณ์ผิดพลาดกลางทาง เช่น <strong>หารด้วยศูนย์ (<code>10 / 0</code>)</strong> หรือเปิดไฟล์ที่ไม่มีอยู่ → โปรแกรมค้างหรือหลุดกลางอากาศ</li>
+      <li><strong>Logic Error (ผิดที่ตรรกะคนเขียน):</strong> โปรแกรมรันจบไม่แจ้ง Error อะไรเลย <em>แต่คำตอบออกมาผิด!</em> เช่น อยากหาค่าเฉลี่ย <code>(a + b) / 2</code> แต่ลืมใส่วงเล็บกลายเป็น <code>a + b / 2</code> — จับตัวยากที่สุด!</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>ตัวดำเนินการที่ต้องแม่น (Arithmetic, Increment &amp; Comparison Operators)</h3>
+<ul>
+  <li><strong>Modulo (<code>%</code>):</strong> คือการหารเอาเฉพาะ <strong>"เศษ"</strong> เช่น <code>17 % 5 = 2</code> (เพราะ 5 × 3 = 15 เหลือเศษ 2) — นิยมใช้เช็กเลขคู่/คี่ (<code>x % 2 == 0</code> แปลว่าหาร 2 ลงตัว = เลขคู่!)</li>
+  <li><strong>Integer Division vs Float Division:</strong> ในภาษา C / Java / SQLite ถ้าเอาจำนวนเต็มหารจำนวนเต็ม เช่น <code>7 / 2</code> จะได้ <strong><code>3</code></strong> (ตัดเศษ <code>.5</code> ทิ้ง ไม่ได้ปัดขึ้น!) ต้องเขียน <code>7.0 / 2</code> จึงจะได้ <code>3.5</code></li>
+  <li><strong><code>++i</code> (Pre-increment) vs <code>i++</code> (Post-increment) — จุดหลอกระดับตำนาน!</strong>
+    ทั้งคู่แปลว่าเพิ่มค่า <code>i</code> ขึ้น 1 (<code>i = i + 1</code>) เหมือนกัน <em>แต่จังหวะเอาไปใช้ต่างกัน:</em>
+    <ul>
+      <li><strong><code>++i</code> (บวกก่อน แล้วค่อยเอาไปใช้):</strong> เพิ่มค่า <code>i</code> ให้เรียบร้อยก่อน แล้วค่อยส่งค่าใหม่ไปคำนวณในสมการ</li>
+      <li><strong><code>i++</code> (เอาค่าเดิมไปใช้ก่อน แล้วค่อยบวกทีหลัง):</strong> ส่งค่า <code>i</code> ปัจจุบันไปใช้ในสมการก่อน เสร็จแล้วค่อยเพิ่ม <code>i</code> ขึ้น 1</li>
+    </ul>
+<pre tabindex="0"><code>let i = 5;
+let a = ++i; // ++ อยู่หน้า: เพิ่ม i จาก 5 -&gt; 6 ก่อน แล้วค่อยใส่ a =&gt; a = 6, i = 6
+
+let j = 5;
+let b = j++; // ++ อยู่หลัง: เอา j เดิม (5) ใส่ b ก่อน แล้วค่อยเพิ่ม j =&gt; b = 5, j = 6</code></pre>
+  </li>
+  <li><strong><code>=</code> vs <code>==</code> vs <code>===</code>:</strong> <code>=</code> คือ <em>กำหนดค่า</em> เก็บใส่ตัวแปร (เช่น <code>x = 10</code>), <code>==</code> คือ <em>เปรียบเทียบ</em> ว่าค่าเท่ากันไหม (เช่น <code>5 == '5'</code> ได้ <code>true</code> ใน JS), ส่วน <code>===</code> (Strict Equality) เช็กทั้ง <strong>ค่าและชนิดข้อมูล</strong> (<code>5 === '5'</code> ได้ <code>false</code> เพราะตัวเลขกับข้อความคนละชนิด!)</li>
+</ul>
+
+<h3>ตรรกศาสตร์ในโปรแกรม: AND, OR, XOR, NOT แปลเป็นภาษาคน</h3>
+<ul>
+  <li><strong>AND (<code>&amp;&amp;</code> — และ):</strong> "ต้องเป็นจริง <strong>ทั้งคู่</strong> ถึงจะผ่าน" (เช่น อายุ &gt;= 20 ปี <em>และ</em> นำบัตรประชาชนตัวจริงมาด้วย ถึงทำนิติกรรมได้)</li>
+  <li><strong>OR (<code>||</code> — หรือ):</strong> "ขอแค่เป็นจริง <strong>อย่างน้อย 1 เงื่อนไข</strong> ก็ผ่านแล้ว" (เช่น ยืนยันตัวตนด้วยบัตรประชาชนตัวจริง <em>หรือ</em> แอป ThaiD อย่างใดอย่างหนึ่ง)</li>
+  <li><strong>XOR (<code>^</code> — Exclusive OR):</strong> "ต้อง <strong>ต่างกัน</strong> ถึงจะจริง ถ้าเหมือนกันทั้งคู่เป็นเท็จ!" (เช่น เลือกโปรโมชันส่วนลดได้เพียงอย่างเดียว ห้ามเลือก 2 อันพร้อมกัน และห้ามไม่เลือกเลย)</li>
+  <li><strong>NOT (<code>!</code> — นิเสธ):</strong> "กลับคำตรงข้าม" จาก <code>true</code> เป็น <code>false</code> และจาก <code>false</code> เป็น <code>true</code></li>
 </ul>
 
 <div class="table-wrap">
   <table>
-    <caption>ตารางค่าความจริง (Truth Table) และลำดับความสำคัญตัวดำเนินการ</caption>
+    <caption>ตารางค่าความจริง (Truth Table) ของตัวดำเนินการตรรกศาสตร์</caption>
     <thead>
       <tr>
         <th scope="col">A</th>
@@ -74,18 +120,36 @@
 </div>
 
 <div class="callout callout-tip">
-  <strong><i class="fa-solid fa-bolt" aria-hidden="true"></i> ลำดับความสำคัญ (Operator Precedence) จากสูงไปต่ำ:</strong>
-  <code>()</code> → <code>!</code> (NOT) → <code>* / %</code> → <code>+ -</code> → <code>&lt; &lt;= &gt; &gt;=</code> → <code>== !=</code> → <code>&amp;&amp;</code> (AND ทำก่อน OR!) → <code>||</code> (OR)<br>
-  <em>ตัวอย่าง:</em> <code>true || false &amp;&amp; false</code> จะทำ <code>false &amp;&amp; false</code> ก่อนได้ <code>false</code> แล้วค่อยทำ <code>true || false</code> ได้ผลลัพธ์สุดท้ายเป็น <strong><code>true</code></strong>!
+  <strong><i class="fa-solid fa-bolt" aria-hidden="true"></i> ลำดับความสำคัญตัวดำเนินการ (Operator Precedence) จากสูงไปต่ำ:</strong>
+  <code>()</code> (ทำในวงเล็บก่อนเสมอ) → <code>!</code> (NOT) → <code>* / %</code> → <code>+ -</code> → <code>&lt; &lt;= &gt; &gt;=</code> → <code>== !=</code> → <code>&amp;&amp;</code> (AND ทำก่อน OR!) → <code>||</code> (OR)<br>
+  <strong>ตัวอย่างแกะทีละก้าว:</strong> นิพจน์ <code>(14 % 4 == 2) &amp;&amp; false || true</code><br>
+  1) ทำในวงเล็บก่อน: <code>14 % 4</code> ได้เศษ <code>2</code> → <code>2 == 2</code> ได้ <code>true</code><br>
+  2) ทำ <code>&amp;&amp;</code> ก่อน <code>||</code>: <code>true &amp;&amp; false</code> ได้ <code>false</code><br>
+  3) สุดท้ายทำ <code>||</code>: <code>false || true</code> ได้ผลลัพธ์สุดท้ายเป็น <strong><code>true</code></strong>!
 </div>`
       },
       {
         id: 'control-flow',
         title: '2. โครงสร้างควบคุม: If-Else, Loops และเทคนิคทำ Trace Table',
+        analogyBox: {
+          title: 'เปรียบเทียบให้เห็นภาพ: ขับรถบนถนน แยกไฟแดง กดลิฟต์ และวิ่งรอบสนาม',
+          body: '• <strong>Sequence (ลำดับ):</strong> ขับรถตรงไปตามถนนทีละก้าวจากบนลงล่าง<br>• <strong><code>if / else if / else</code> (ทางแยก):</strong> เจอสี่แยกแล้วเช็กเงื่อนไข "ถ้าไฟเขียวไปต่อ มิฉะนั้นถ้าไฟเหลืองชะลอ มิฉะนั้นหยุด" (เข้าทางไหนแล้วออกทางแยกทันที ไม่ย้อนเข้าอันอื่น)<br>• <strong><code>switch-case</code> (แผงปุ่มลิฟต์):</strong> กดชั้นไหนก็กระโดดตรงไปชั้นนั้นทันที (และต้องมี <strong><code>break</code></strong> คั่น ไม่อย่างนั้นลิฟต์จะไหลเปิดประตูทุกชั้นลงไปเรื่อยๆ!)<br>• <strong>Loops (วนซ้ำ):</strong> วิ่งรอบสนามกีฬาจนกว่าจะครบ 10 รอบหรือเหนื่อย; <code>continue</code> คือ <em>"รอบนี้ไม่นับขอกินน้ำแล้วไปเริ่มรอบหน้า"</em> ส่วน <code>break</code> คือ <em>"หยุดวิ่งเดี๋ยวนี้ ออกจากสนามกลับบ้านเลย!"</em>'
+        },
         bodyHtml: `
-<p>โปรแกรมทุกโปรแกรมประกอบจากโครงสร้างควบคุมพื้นฐานเพียง 3 แบบ คือ <strong>1) ลำดับ (Sequence)</strong> ทำจากบนลงล่าง, <strong>2) ทางเลือก (Selection)</strong> <code>if / else if / else</code> และ <code>switch-case</code>, และ <strong>3) การวนซ้ำ (Iteration / Loop)</strong></p>
+<p>โปรแกรมทุกโปรแกรมบนโลก ไม่ว่าจะซับซ้อนขนาดไหน ก็สร้างขึ้นมาจากโครงสร้างควบคุม (Control Flow) พื้นฐานเพียง 3 แบบเท่านั้น คือ <strong>1) ลำดับ (Sequence)</strong> ทำเรียงจากบนลงล่าง, <strong>2) ทางเลือก (Selection)</strong> เลือกตัดสินใจ, และ <strong>3) การวนซ้ำ (Iteration / Loop)</strong></p>
 
-<h3>เปรียบเทียบ Loop ทั้ง 3 ชนิด + break &amp; continue</h3>
+<h3>ทางเลือก: <code>if / else if / else</code> vs <code>switch-case</code> (และหน้าที่ของ <code>break</code>)</h3>
+<ul>
+  <li><strong><code>if / else if / else</code>:</strong> ตรวจสอบเงื่อนไขทีละข้อจากบนลงล่าง <strong>เจอเงื่อนไขไหนที่เป็นจริงอันแรก จะทำงานบล็อกนั้นแล้วข้าม <code>else if</code> ที่เหลือทั้งหมดทันที!</strong> (ข้อสอบชอบแกล้งเรียงช่วงคะแนนผิด เช่น เอา <code>&gt;= 70</code> ไว้ก่อน <code>&gt;= 75</code> ทำให้คะแนน 78 ติดที่ 70 ก่อนเสมอ!)</li>
+  <li><strong><code>switch-case</code>:</strong> เหมาะกับการเช็กค่าที่ตรงตัวแน่นอนหลายกรณี (เช่น เลือกเมนูเลข 1, 2, 3) โดย <strong><code>break;</code></strong> มีหน้าที่สั่งให้หยุดและกระโดดออกจาก <code>switch</code> ทันทีที่ทำ <code>case</code> นั้นเสร็จ — <strong>ข้อควรระวัง:</strong> หาก<em>ลืมใส่ <code>break</code></em> โปรแกรมจะเกิดอาการ <strong>Fall-through</strong> คือไหลทะลุลงไปรันคำสั่งใน <code>case</code> ถัดไปเรื่อยๆ จนกว่าจะเจอ <code>break</code> หรือจบ <code>switch</code>! (และ <code>default:</code> ใช้รองรับกรณีไม่ตรงกับ <code>case</code> ใดเลย)</li>
+</ul>
+
+<h3>เปรียบเทียบ Loop ทั้ง 3 ชนิด + <code>break</code> &amp; <code>continue</code></h3>
+<ul>
+  <li><strong><code>break</code> (หยุดทั้งลูป):</strong> เจอปุ๊บสั่งจบการวนซ้ำทั้งหมดและออกจากลูปทันที (เหมือนกดปุ่มหยุดฉุกเฉิน)</li>
+  <li><strong><code>continue</code> (ข้ามเฉพาะรอบนี้):</strong> ทิ้งคำสั่งที่เหลือในรอบปัจจุบัน แล้วย้อนกลับไปตรวจเงื่อนไข (หรืออัปเดตตัวนับ <code>i++</code>) เพื่อเริ่มรอบถัดไป</li>
+</ul>
+
 <div class="table-wrap">
   <table>
     <caption>เปรียบเทียบโครงสร้างวนซ้ำ for, while และ do-while</caption>
@@ -100,42 +164,76 @@
     <tbody>
       <tr>
         <th scope="row"><code>for</code> loop</th>
-        <td>ตรวจก่อนเข้าแต่ละรอบ</td>
+        <td>ตรวจก่อนเข้าแต่ละรอบ (Pre-test)</td>
         <td>0 รอบ (หากเงื่อนไขเท็จตั้งแต่แรก)</td>
-        <td>รู้จำนวนรอบแน่นอน เช่น วนอ่านแปลงที่ดินตั้งแต่รายการที่ 0 ถึง n-1</td>
+        <td><strong>รู้จำนวนรอบแน่นอน</strong> เช่น วนอ่านแปลงที่ดินตั้งแต่รายการที่ 0 ถึง n-1</td>
       </tr>
       <tr>
         <th scope="row"><code>while</code> loop</th>
         <td>ตรวจก่อนเข้าแต่ละรอบ (Pre-test)</td>
-        <td>0 รอบ</td>
-        <td>ไม่รู้จำนวนรอบล่วงหน้า วนจนกว่าเงื่อนไขจะเป็นเท็จ เช่น อ่านไฟล์จนจบ (EOF)</td>
+        <td>0 รอบ (อาจไม่ทำงานเลยสักรอบ!)</td>
+        <td><strong>ไม่รู้จำนวนรอบล่วงหน้า</strong> วนไปเรื่อยๆ จนกว่าเงื่อนไขจะเป็นเท็จ เช่น อ่านไฟล์จนกว่าจะจบ (EOF)</td>
       </tr>
       <tr>
         <th scope="row"><code>do ... while</code></th>
         <td>ทำ 1 รอบก่อน แล้วค่อยตรวจ (Post-test)</td>
-        <td><strong>อย่างน้อย 1 รอบเสมอ</strong></td>
-        <td>แสดงเมนูให้ผู้ใช้เลือกหรือรับรหัสผ่านอย่างน้อย 1 ครั้งก่อนเช็กเงื่อนไข</td>
+        <td><strong>อย่างน้อย 1 รอบเสมอ!</strong></td>
+        <td>แสดงเมนูให้ผู้ใช้เลือกหรือขอรับรหัสผ่านอย่างน้อย 1 ครั้งก่อนเช็กเงื่อนไข</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<h3>ฝึกไล่ค่าตัวแปร (Trace Table) ก่อนตอบข้อสอบ!</h3>
-<p>อย่าคิดในใจเด็ดขาดเมื่อเจอโค้ดวนลูปในห้องสอบ! ให้เขียนตารางไล่ค่าตัวแปรทีละรอบเหมือนตัวอย่างคำนวณค่าธรรมเนียมรวมของแปลงที่ดิน 4 แปลงด้านล่างนี้:</p>
+<h3>ฝึกไล่ค่าตัวแปร (Trace Table): ทั้ง Single Loop และ Nested Loop (ลูปซ้อนลูป)</h3>
+<p><strong>กฎเหล็กในห้องสอบ:</strong> ห้ามคิดเลขลูปในใจเด็ดขาด! ให้ตีตาราง <strong>Trace Table</strong> จดค่าตัวแปรทีละรอบแบบนี้:</p>
+
+<h4>ตัวอย่างที่ 1: Single Loop กับ <code>continue</code> (รวมค่าธรรมเนียมตั้งแต่ 1,000 บาทขึ้นไป)</h4>
 <pre tabindex="0"><code>let prices = [1200, 3500, 800, 4000];
 let total = 0;
 for (let i = 0; i &lt; prices.length; i++) {
   if (prices[i] &lt; 1000) {
-    continue; // ข้ามแปลงที่ต่ำกว่า 1,000 บาท
+    continue; // ข้ามแปลงที่ต่ำกว่า 1,000 บาท (ไม่บวกเข้า total)
   }
   total = total + prices[i];
 }
 // ไล่ Trace Table:
 // รอบ i=0: prices[0]=1200 (&gt;=1000) -&gt; total = 0 + 1200 = 1200
 // รอบ i=1: prices[1]=3500 (&gt;=1000) -&gt; total = 1200 + 3500 = 4700
-// รอบ i=2: prices[2]=800  (&lt;1000)  -&gt; continue! (total ยังคงเป็น 4700)
+// รอบ i=2: prices[2]=800  (&lt;1000)  -&gt; continue! ข้ามไป i=3 (total ยังเป็น 4700)
 // รอบ i=3: prices[3]=4000 (&gt;=1000) -&gt; total = 4700 + 4000 = 8700
-// จบลูป: total = 8700</code></pre>`,
+// i=4: 4 &lt; 4 เป็นเท็จ -&gt; จบลูป: total = 8700</code></pre>
+
+<h4>ตัวอย่างที่ 2: Nested Loop (ลูปซ้อนลูป — จุดออกสอบยอดฮิต!)</h4>
+<p>หลักการของ <strong>Nested Loop</strong> คือ <em>"ลูปนอก <code>i</code> ขยับ 1 ก้าว → ลูปใน <code>j</code> ต้องวิ่งให้จบครบทุกรอบของมันก่อน!"</em> มาดูโค้ดและ Trace Table ด้านล่างครับ:</p>
+<pre tabindex="0"><code>let count = 0;
+for (let i = 1; i &lt;= 2; i++) {
+  for (let j = 1; j &lt;= 3; j++) {
+    count = count + (i * j);
+  }
+}</code></pre>
+
+<div class="table-wrap">
+  <table>
+    <caption>ตาราง Trace Table แสดงค่า i, j และ count ทีละขั้นของ Nested Loop</caption>
+    <thead>
+      <tr>
+        <th scope="col">ขั้นที่</th>
+        <th scope="col">i (ลูปนอก)</th>
+        <th scope="col">j (ลูปใน)</th>
+        <th scope="col">คำนวณ i * j</th>
+        <th scope="col">ค่า count ล่าสุด</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>1</td><td>1</td><td>1 × 1 = 1</td><td>0 + 1 = <strong>1</strong></td></tr>
+      <tr><td>2</td><td>1</td><td>2</td><td>1 × 2 = 2</td><td>1 + 2 = <strong>3</strong></td></tr>
+      <tr><td>3</td><td>1</td><td>3</td><td>1 × 3 = 3</td><td>3 + 3 = <strong>6</strong> (จบลูป j รอบ i=1)</td></tr>
+      <tr><td>4</td><td>2</td><td>1</td><td>2 × 1 = 2</td><td>6 + 2 = <strong>8</strong> (เริ่ม j=1 ใหม่!)</td></tr>
+      <tr><td>5</td><td>2</td><td>2</td><td>2 × 2 = 4</td><td>8 + 4 = <strong>12</strong></td></tr>
+      <tr><td>6</td><td>2</td><td>3</td><td>2 × 3 = 6</td><td>12 + 6 = <strong>18</strong> (จบทั้งหมด!)</td></tr>
+    </tbody>
+  </table>
+</div>`,
         mermaid: {
           title: 'แผนผังการทำงานของ For-Loop สะสมยอดค่าธรรมเนียม (Trace Flow)',
           caption: 'สังเกตเส้นทางวนกลับจาก continue ไปเพิ่มค่า i++ และจุดหยุดเมื่อเงื่อนไข i < 4 เป็นเท็จ',
@@ -152,11 +250,48 @@ for (let i = 0; i &lt; prices.length; i++) {
         id: 'data-structures',
         title: '3. โครงสร้างข้อมูลหลัก: Array, Stack (LIFO) และ Queue (FIFO)',
         analogyBox: {
-          title: 'เปรียบเทียบให้เห็นภาพ: ตู้ล็อกเกอร์ กองจาน และแถวรอคิว',
-          body: '• <strong>Array:</strong> เหมือน <strong>"ตู้ล็อกเกอร์เรียงติดกันมีเลขห้อง Index 0, 1, 2..."</strong> รู้เลขห้องเมื่อไรเปิดหยิบได้ทันทีใน 1 ก้าว (<code>O(1)</code>)<br>• <strong>Stack (LIFO):</strong> เหมือน <strong>"กองจานในร้านอาหาร"</strong> ใบที่ล้างเสร็จทีหลังวางซ้อนบนสุด (<strong>Push</strong>) และลูกค้าคนถัดไปจะหยิบใบบนสุดไปใช้ก่อน (<strong>Pop</strong>) → <em>Last-In, First-Out</em><br>• <strong>Queue (FIFO):</strong> เหมือน <strong>"แถวรอคิวหน้าเคาน์เตอร์กรมที่ดิน"</strong> ใครมาก่อนเข้าต่อท้ายแถว (<strong>Enqueue</strong>) และได้เรียกคิวออกจากหัวแถวก่อน (<strong>Dequeue</strong>) → <em>First-In, First-Out</em>'
+          title: 'เปรียบเทียบให้เห็นภาพ: ตู้ล็อกเกอร์ ขบวนรถไฟ กองจาน แถวรอคิว และสารบัญตู้ยา',
+          body: '• <strong>Array:</strong> เหมือน <strong>"ตู้ล็อกเกอร์เรียงติดกันมีเลขห้อง Index 0, 1, 2..."</strong> รู้เลขห้องเมื่อไรเปิดหยิบได้ทันทีใน 1 ก้าว (<code>O(1)</code>)<br>• <strong>Linked List:</strong> เหมือน <strong>"โบกี้รถไฟคล้องต่อกัน"</strong> แทรกหรือถอดโบกี้กลางขบวนง่าย แต่ถ้าอยากไปโบกี้ที่ 50 ต้องเดินไล่จากหัวขบวนทีละตู้<br>• <strong>Stack (LIFO):</strong> เหมือน <strong>"กองจานในร้านอาหาร"</strong> ใบที่ล้างเสร็จทีหลังวางซ้อนบนสุด (<strong>Push</strong>) และหยิบใบบนสุดไปใช้ก่อน (<strong>Pop</strong>) → <em>Last-In, First-Out</em><br>• <strong>Queue (FIFO):</strong> เหมือน <strong>"แถวรอคิวหน้าเคาน์เตอร์กรมที่ดิน"</strong> มาก่อนเข้าต่อท้ายแถว (<strong>Enqueue</strong>) และถูกเรียกออกจากหัวแถวก่อน (<strong>Dequeue</strong>) → <em>First-In, First-Out</em><br>• <strong>Tree &amp; Hash Table:</strong> <strong>Tree</strong> เหมือน <em>ผังลำดับชั้นโฟลเดอร์/องค์กร</em> ส่วน <strong>Hash Table</strong> เหมือน <em>สูตรคำนวณเลขลิ้นชัก</em> รู้ชื่อปุ๊บเปิดถูกลิ้นชักทันที!'
         },
         bodyHtml: `
-<p>ข้อสอบโครงสร้างข้อมูล (Data Structures) จะทดสอบทั้งความเข้าใจหลักการและการไล่ลำดับ <code>Push/Pop</code> กับ <code>Enqueue/Dequeue</code> รวมถึงการนำไปประยุกต์ใช้จริงในระบบคอมพิวเตอร์ครับ</p>`,
+<h3>Data Structure คืออะไร? ทำไมต้องเลือกให้ถูก?</h3>
+<p><strong>โครงสร้างข้อมูล (Data Structure)</strong> คือ <strong>"รูปแบบการจัดเก็บและจัดระเบียบข้อมูลในหน่วยความจำ (RAM)"</strong> เพื่อให้โปรแกรมเรียกใช้ ค้นหา เพิ่ม หรือลบข้อมูลได้อย่างมีประสิทธิภาพสูงสุด ลองนึกภาพว่าถ้าข้อมูลแปลงที่ดินมี 10 ล้านแปลง การเลือกโครงสร้างข้อมูลที่เหมาะสมอาจทำให้เวลาค้นหาลดจาก <em>10 วินาที เหลือไม่ถึง 1 มิลลิวินาที</em> เลยครับ!</p>
+
+<h3>โครงสร้างข้อมูลเชิงเส้น 4 ตัวที่ออกสอบประจำ</h3>
+<ul>
+  <li><strong>1. Array (อาร์เรย์ — 1 มิติ และ 2 มิติ):</strong>
+    <ul>
+      <li><strong>คืออะไร:</strong> แถวช่องเก็บข้อมูลชนิดเดียวกันที่จองพื้นที่ <strong>เรียงติดกันใน RAM</strong> โดยทุกช่องมีหมายเลขกำกับเรียกว่า <strong>Index (เริ่มนับที่ <code>0</code> เสมอ!)</strong> ดังนั้นถ้า Array มี <code>n</code> ช่อง ตัวแรกคือ <code>arr[0]</code> และตัวสุดท้ายคือ <code>arr[n - 1]</code></li>
+      <li><strong>Array 1 มิติ vs 2 มิติ:</strong> 1 มิติเหมือนแถวเดียว เช่น <code>prices[2]</code>, ส่วน <strong>Array 2 มิติ</strong> เหมือนตาราง Excel มีแถวและคอลัมน์ เช่น <code>grid[row][col]</code> (เช่น เก็บตารางค่าพิกัดหรือเมทริกซ์)</li>
+      <li><strong>จุดเด่น / จุดด้อย:</strong> เข้าถึงข้อมูลด้วย Index ได้เร็วที่สุดในระดับ <strong><code>O(1)</code></strong> แต่ขนาดมักคงที่ และถ้าจะแทรกหรือลบข้อมูลตรงกลางต้องขยับเลื่อนช่องที่เหลือทั้งหมด (<code>O(n)</code>)</li>
+    </ul>
+  </li>
+  <li><strong>2. Linked List (ลิงก์ลิสต์):</strong>
+    <ul>
+      <li><strong>ต่างจาก Array ยังไง?</strong> Linked List ไม่จำเป็นต้องจอง RAM ติดกันเป็นแถวยาว! แต่เก็บเป็นก้อนอิสระเรียกว่า <strong>Node</strong> โดยแต่ละ Node แบ่งเป็น 2 ช่อง: <strong>[ข้อมูล (Data) | ตัวชี้ (Pointer ไปยัง Node ถัดไป)]</strong></li>
+      <li><strong>จุดเด่น / จุดด้อย:</strong> แทรกหรือลบ Node ตรงหัวหรือกลางขบวนทำได้ไว (แค่เปลี่ยนเส้นชี้ Pointer ไม่ต้องขยับก้อนอื่น) แต่ <em>เข้าถึงตำแหน่งที่ต้องการโดยตรงไม่ได้</em> ต้องเดินไล่จากหัวขบวน (Head) ทีละ Node ใช้เวลา <strong><code>O(n)</code></strong></li>
+    </ul>
+  </li>
+  <li><strong>3. Stack (สแตก — หลักการ LIFO: Last-In, First-Out "เข้าทีหลัง ออกก่อน"):</strong>
+    <ul>
+      <li><strong>คำสั่งหลัก:</strong> <strong><code>Push(x)</code></strong> = วางข้อมูลใหม่ลงบนยอดสุด (Top), <strong><code>Pop()</code></strong> = หยิบข้อมูลที่อยู่ยอดสุดออกไป, <strong><code>Peek() / Top()</code></strong> = แอบดูค่าบนยอดสุดโดยยังไม่หยิบออก</li>
+      <li><strong>ภาวะผิดพลาดที่ต้องรู้จัก:</strong> <strong>Stack Overflow</strong> (สแตกเต็มแล้วแต่ยังฝืน <code>Push</code> ใส่เพิ่มจนล้น!) และ <strong>Stack Underflow</strong> (สแตกว่างเปล่าแต่ยังสั่ง <code>Pop</code> หยิบของออก)</li>
+      <li><strong>ใช้งานจริงที่ไหนบ้าง?</strong> <strong>Call Stack</strong> (จำลำดับการเรียกฟังก์ชันและตัวแปรย้อนกลับ), ปุ่ม <strong>Undo / Redo</strong> ใน Word, ปุ่ม <strong>Back</strong> ย้อนหน้าในเว็บเบราว์เซอร์, การตรวจสอบวงเล็บเปิด-ปิดสมดุล</li>
+    </ul>
+  </li>
+  <li><strong>4. Queue (คิว — หลักการ FIFO: First-In, First-Out "มาก่อน ออกก่อน"):</strong>
+    <ul>
+      <li><strong>คำสั่งหลัก:</strong> <strong><code>Enqueue(x)</code></strong> = ต่อแถวเข้าด้านหลังสุด (<strong>Rear / Tail</strong>), <strong><code>Dequeue()</code></strong> = เรียกออกจากด้านหน้าสุด (<strong>Front / Head</strong>)</li>
+      <li><strong>ใช้งานจริงที่ไหนบ้าง?</strong> ระบบจองคิวบริการประชาชน <strong>e-QLands</strong>, <strong>Print Spooler</strong> (จัดคิวงานสั่งพิมพ์เอกสารส่งเข้าเครื่องพิมพ์), คิวรับคำขอ Request บน Web Server, และอัลกอริทึมค้นหาแนวขวาง (<strong>BFS</strong>)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>รู้จัก Tree (Binary Search Tree) และ Hash Table แบบเข้าใจง่าย</h3>
+<ul>
+  <li><strong>Tree &amp; Binary Search Tree (BST):</strong> โครงสร้างข้อมูลแบบ <strong>ลำดับชั้น (Hierarchical)</strong> ไม่เป็นเส้นตรง โดยมีจุดสูงสุดเรียกว่า <strong>Root (ราก)</strong> แตกกิ่งเชื่อมลงไปหาโหนดลูก (Child) จนถึงปลายใบ (Leaf) — สำหรับ <strong>Binary Search Tree (BST)</strong> เป็นต้นไม้ที่แต่ละโหนดมีลูกได้ไม่เกิน 2 ฝั่ง (ซ้าย/ขวา) โดยมีกฎเหล็กว่า: <strong>"ลูกฝั่งซ้ายมีค่าน้อยกว่าแม่, ลูกฝั่งขวามีค่ามากกว่าแม่"</strong> ทำให้ค้นหาข้อมูลได้เร็วมากเพราะตัดฝั่งที่ไม่ใช่ทิ้งทีละครึ่ง!</li>
+  <li><strong>Hash Table (แฮชเทเบิล):</strong> โครงสร้างที่เก็บข้อมูลเป็นคู่ <strong><code>Key → Value</code></strong> โดยส่ง Key (เช่น เลขบัตรประชาชน) ผ่านสูตร <strong>Hash Function</strong> เพื่อคำนวณออกมาเป็นเลขตำแหน่ง Index ในตารางทันที! จึงค้นหา เพิ่ม หรือลบข้อมูลได้เร็วระดับ <strong><code>O(1)</code></strong> ในกรณีปกติ (แต่หาก Key 2 ตัวคำนวณได้ช่องซ้ำกัน เรียกว่า <em>Hash Collision</em> ซึ่งต้องจัดการแก้การชนด้วยเทคนิคเสริม)</li>
+</ul>`,
         visualCard: {
           type: 'svg',
           caption: 'ภาพเปรียบเทียบโครงสร้างข้อมูล Array (Index เริ่ม 0), Stack (LIFO) และ Queue (FIFO) พร้อมทิศทางคำสั่งหลัก',
@@ -250,18 +385,60 @@ for (let i = 0; i &lt; prices.length; i++) {
       {
         id: 'oop-algorithms',
         title: '4. พื้นฐาน OOP (APIE) และอัลกอริทึมค้นหา-เรียงลำดับ (Big-O)',
+        analogyBox: {
+          title: 'เปรียบเทียบให้เห็นภาพ: พิมพ์กดคุกกี้ (Class) vs ขนมคุกกี้ (Object) และขนาดความโต Big-O',
+          body: '• <strong>Class vs Object:</strong> <strong>Class</strong> คือ <em>"แม่พิมพ์กดคุกกี้ / แบบแปลน"</em> ที่กำหนดว่าต้องมีรูปร่างและสูตรยังไง ส่วน <strong>Object</strong> คือ <em>"ขนมคุกกี้ชิ้นจริง"</em> ที่กดออกมาจากแม่พิมพ์นั้น 1 แม่พิมพ์สร้างคุกกี้ได้เป็นร้อยชิ้น แต่ละชิ้นมีรสชาติหรือขนาด (Attribute) ต่างกันได้<br>• <strong>Big-O Notation:</strong> ไม่ได้วัดเวลาเป็นวินาที (เพราะคอมพิวเตอร์แรงกับช้าต่างกัน) แต่วัดว่า <em>"ถ้าข้อมูลโตขึ้น 10 เท่า จำนวนรอบการทำงานจะพุ่งขึ้นกี่เท่า?"</em> เหมือนเปิดหาคำในพจนานุกรมแบบเปิดทีละครึ่งเล่ม (<code>O(log n)</code>) เทียบกับไล่อ่านทีละหน้าตั้งแต่หน้าแรก (<code>O(n)</code>)!'
+        },
         bodyHtml: `
-<p>ปิดท้ายคอร์สหลักด้วย 2 หัวข้อที่ออกสอบความเข้าใจเชิงสถาปัตยกรรมซอฟต์แวร์เสมอ ได้แก่ <strong>OOP (Object-Oriented Programming)</strong> และความซับซ้อนเชิงเวลา <strong>Big-O Notation</strong> ครับ</p>
+<p>ปิดท้ายบทเรียนหลักด้วย 3 เรื่องสำคัญที่ออกสอบความเข้าใจเชิงสถาปัตยกรรมซอฟต์แวร์เสมอ ได้แก่ <strong>Functions &amp; Recursion</strong>, <strong>OOP</strong> และ <strong>Big-O กับอัลกอริทึมค้นหา-เรียงลำดับ</strong> ครับ</p>
 
-<h3>4 เสาหลักของ OOP (จำง่ายว่า A-P-I-E)</h3>
+<h3>Functions &amp; Recursion: แยกย่อยงานและฟังก์ชันเรียกตัวเอง</h3>
 <ul>
-  <li><strong>E — Encapsulation (การห่อหุ้มข้อมูล):</strong> ซ่อนรายละเอียดภายใน (กำหนด Field เป็น <code>private</code>) แล้วเปิดให้เข้าถึงผ่านเมธอดที่ปลอดภัย (<code>public get/set</code>) เช่น ห้ามแก้ราคาประเมินที่ดินตรงๆ ต้องผ่านเมธอดตรวจสอบสิทธิ์ก่อน</li>
-  <li><strong>I — Inheritance (การสืบทอด):</strong> คลาสลูก (Subclass) สืบทอดคุณสมบัติและเมธอดจากคลาสแม่ (Superclass) เพื่อลดโค้ดซ้ำซ้อน เช่น <code>TitleDeed</code> (โฉนด น.ส.4 จ.) สืบทอดมาจาก <code>LandDocument</code></li>
-  <li><strong>P — Polymorphism (ความหลากหลายรูปแบบ):</strong> เมธอดชื่อเดียวกันแต่ทำงานต่างกันตามชนิดของวัตถุ (Overriding / Overloading) เช่น <code>calculateFee()</code> ของแปลงโฉนดกับอาคารชุดคำนวณสูตรต่างกัน</li>
-  <li><strong>A — Abstraction (ความเป็นนามธรรม):</strong> เปิดเผยเฉพาะส่วนสำคัญที่ผู้ใช้ต้องเรียกใช้ และซ่อนความซับซ้อนเบื้องหลัง (ใช้ Abstract Class หรือ Interface)</li>
+  <li><strong>Function (ฟังก์ชัน) คืออะไร?</strong> คือ "กล่องชุดคำสั่งย่อย" ที่ตั้งชื่อไว้ให้เรียกใช้งานซ้ำได้หลายครั้งโดยไม่ต้องก๊อปปี้โค้ดมาวางซ้ำ! คำศัพท์ 3 คำที่ต้องแยกให้ออก:
+    <ul>
+      <li><strong>Parameter:</strong> ชื่อตัวแปรที่ประกาศ <em>รอรับค่าตรงหัวฟังก์ชัน</em> (เหมือนช่องเติมวัตถุดิบของเครื่องปั่น เช่น <code>function calcTax(price)</code> → <code>price</code> คือ Parameter)</li>
+      <li><strong>Argument:</strong> <em>ค่าข้อมูลจริงที่โยนส่งเข้าไป</em> ตอนเรียกใช้ฟังก์ชัน (เช่น ตอนเรียก <code>calcTax(500000)</code> → <code>500000</code> คือ Argument)</li>
+      <li><strong>Return Value:</strong> ผลลัพธ์ที่ฟังก์ชันคำนวณเสร็จแล้ว <em>ส่งคืนกลับออกมา</em> ให้ผู้เรียกใช้คำสั่ง <code>return</code></li>
+    </ul>
+  </li>
+  <li><strong>Recursion (การเรียกซ้ำตัวเอง):</strong> คือเทคนิคที่ฟังก์ชัน <em>เรียกใช้ตัวมันเองซ้ำ</em> เพื่อแตกปัญหาใหญ่เป็นปัญหาย่อยที่เล็กลงเรื่อยๆ เช่น <code>5! = 5 × 4!</code> (ทำซ้ำจนเหลือ <code>1!</code>) โดยฟังก์ชัน Recursive ทุกตัวต้องมี 2 ส่วนเสมอ:
+    <ol>
+      <li><strong>Base Case (กรณีพื้นฐาน / เงื่อนไขหยุด):</strong> จุดบอกให้หยุดเรียกตัวเองต่อ (เช่น <code>if (n &lt;= 1) return 1;</code>)</li>
+      <li><strong>Recursive Step:</strong> การเรียกตัวเองด้วยค่าที่เข้าใกล้ Base Case มากขึ้นเรื่อยๆ (เช่น <code>return n * factorial(n - 1);</code>)</li>
+    </ol>
+  </li>
 </ul>
 
-<h3>ตารางเปรียบเทียบอัลกอริทึมค้นหา-เรียงลำดับ และ Big-O</h3>
+<div class="callout callout-info">
+  <strong><i class="fa-solid fa-repeat" aria-hidden="true"></i> ข้อควรระวังของ Recursion:</strong>
+  หากลืมเขียน <strong>Base Case</strong> (หรือเขียนเงื่อนไขผิดจนไปไม่ถึงจุดหยุด) ฟังก์ชันจะเรียกตัวเองซ้ำไม่รู้จบจนหน่วยความจำ Call Stack เต็ม เกิด Error ร้ายแรงที่เรียกว่า <strong>Stack Overflow</strong>!
+</div>
+
+<h3>OOP (Object-Oriented Programming): Class vs Object และ 4 เสาหลัก (A-P-I-E)</h3>
+<p>การเขียนโปรแกรมเชิงวัตถุ (<strong>OOP</strong>) จำลองระบบคอมพิวเตอร์ให้เหมือนวัตถุในโลกจริง โดยแยกชัดเจนระหว่าง:</p>
+<ul>
+  <li><strong>Class (คลาส):</strong> คือ <strong>"แม่พิมพ์ / แบบแปลน"</strong> ที่เขียนระบุว่าวัตถุชนิดนี้มีข้อมูลอะไรบ้าง (<strong>Attribute / Property</strong>) และทำพฤติกรรมอะไรได้บ้าง (<strong>Method</strong>)</li>
+  <li><strong>Object / Instance (ออบเจกต์):</strong> คือ <strong>"ตัวตนจริงที่สร้างขึ้นมาจาก Class"</strong> (มักใช้คำสั่ง <code>new</code>) เช่น สร้าง Object โฉนดเลขที่ <code>1001</code> และโฉนดเลขที่ <code>1002</code> จาก Class <code>TitleDeed</code> เดียวกัน</li>
+</ul>
+
+<h4>4 เสาหลักของ OOP (จำง่ายว่า A-P-I-E)</h4>
+<ul>
+  <li><strong>E — Encapsulation (การห่อหุ้มและซ่อนข้อมูล):</strong> ป้องกันไม่ให้โค้ดภายนอกมาแก้ข้อมูลภายในมั่วๆ โดยกำหนด Attribute เป็น <code>private</code> แล้วบังคับให้เข้าถึงผ่านเมธอดตรวจสอบที่ปลอดภัย (<code>public get/set</code>) เช่น ห้ามแก้ราคาประเมินที่ดินตรงๆ ต้องผ่านเมธอด <code>updateAppraisalValue()</code> ที่ตรวจสิทธิ์เจ้าหน้าที่ก่อน</li>
+  <li><strong>I — Inheritance (การสืบทอด):</strong> คลาสลูก (Subclass) สืบทอด Attribute และ Method จากคลาสแม่ (Superclass) ได้เลยเพื่อลดโค้ดซ้ำซ้อน เช่น <code>TitleDeed</code> (โฉนด น.ส.4 จ.) และ <code>NorSor3</code> สืบทอดคุณสมบัติพื้นฐานอย่างเลขที่ดินและเนื้อที่มาจากคลาสแม่ <code>LandDocument</code></li>
+  <li><strong>P — Polymorphism (ความหลากหลายรูปแบบ):</strong> เมธอดชื่อเดียวกันแต่สามารถแสดงพฤติกรรมคำนวณต่างกันตามชนิดของ Object (ผ่าน Overriding / Overloading) เช่น สั่ง <code>doc.calculateFee()</code> เหมือนกัน แต่โฉนดที่ดินกับห้องชุดคำนวณสูตรคนละแบบ</li>
+  <li><strong>A — Abstraction (ความเป็นนามธรรม):</strong> เปิดเผยเฉพาะปุ่มหรือช่องทางจำเป็นให้ผู้ใช้เรียกใช้ โดยซ่อนความซับซ้อนของโค้ดเบื้องหลังไว้ (เช่น กดปุ่ม <code>payFee()</code> จ่ายเงินได้ทันทีโดยไม่ต้องรู้รายละเอียดการเข้ารหัสเชื่อมต่อธนาคารข้างใน — มักออกแบบผ่าน Abstract Class หรือ Interface)</li>
+</ul>
+
+<h3>Big-O Notation คืออะไร? และอัลกอริทึมค้นหา-เรียงลำดับยอดฮิต</h3>
+<p><strong>Big-O Notation</strong> คือสัญลักษณ์ใช้วัด <strong>"อัตราการเติบโตของเวลา/จำนวนขั้นตอน (Time Complexity)"</strong> เมื่อขนาดข้อมูล <code>n</code> เพิ่มขึ้นมหาศาล โดยเรียงลำดับจาก <em>เร็วที่สุด → ช้าที่สุด</em> ดังนี้:</p>
+<ul>
+  <li><strong><code>O(1)</code> — Constant Time (คงที่):</strong> ข้อมูลจะมี 10 ตัว หรือ 10 ล้านตัว ใช้เวลา <strong>เท่าเดิม 1 ก้าว</strong>! เช่น เปิดอ่าน Array ด้วย Index <code>arr[5]</code> หรือค้นหาใน Hash Table</li>
+  <li><strong><code>O(log n)</code> — Logarithmic Time (ลอการิทึม):</strong> ทุก 1 ก้าวสามารถ <strong>ตัดข้อมูลทิ้งได้ทีละครึ่ง!</strong> ข้อมูลเพิ่มเป็น 2 เท่า ใช้เวลาเพิ่มแค่ 1 รอบเท่านั้น (1,000,000 รายการค้นไม่เกิน ~20 ครั้ง!) เช่น <strong>Binary Search</strong></li>
+  <li><strong><code>O(n)</code> — Linear Time (เชิงเส้น):</strong> เวลาโตแปรผันตรงกับจำนวนข้อมูล เช่น <strong>Linear Search</strong> ที่ต้องเดินเช็กทีละช่องตั้งแต่ตัวแรกจนตัวสุดท้าย (เหมาะกับข้อมูลที่ยังไม่ได้เรียงลำดับ)</li>
+  <li><strong><code>O(n log n)</code> — Linearithmic Time:</strong> มาตรฐานความเร็วสูงสุดของการเรียงลำดับข้อมูลทั่วไป (แบบแบ่งแยกและเอาชนะ Divide &amp; Conquer) เช่น <strong>Merge Sort</strong> (เสถียรการันตี <code>O(n log n)</code> เสมอ) และ <strong>Quick Sort</strong> (เฉลี่ยเร็วมาก <code>O(n log n)</code> แต่กรณีแย่สุดอาจตกเป็น <code>O(n²)</code>)</li>
+  <li><strong><code>O(n²)</code> — Quadratic Time (กำลังสอง):</strong> มักเกิดจาก <strong>ลูปซ้อนลูป 2 ชั้น (Nested Loop)</strong> ข้อมูลเพิ่ม 10 เท่า เวลาพุ่งเป็น 100 เท่า! เช่น <strong>Bubble Sort</strong> (เทียบสลับคู่ข้างเคียงไปเรื่อยๆ) และ Insertion Sort — ใช้ได้เฉพาะข้อมูลน้อยๆ</li>
+</ul>
+
 <div class="table-wrap">
   <table>
     <caption>เปรียบเทียบเวลาการทำงาน (Time Complexity) และเงื่อนไขของอัลกอริทึมยอดฮิต</caption>
@@ -300,11 +477,6 @@ for (let i = 0; i &lt; prices.length; i++) {
       </tr>
     </tbody>
   </table>
-</div>
-
-<div class="callout callout-info">
-  <strong><i class="fa-solid fa-repeat" aria-hidden="true"></i> ข้อควรระวังของ Recursion (ฟังก์ชันเรียกตัวเอง):</strong>
-  ฟังก์ชัน Recursive ทุกตัว<strong>ต้องมี Base Case (เงื่อนไขหยุด)</strong> หากลืมเขียน Base Case ฟังก์ชันจะเรียกตัวเองไม่รู้จบจนหน่วยความจำ Call Stack เต็ม เกิด Error ที่เรียกว่า <strong>Stack Overflow</strong>!
 </div>`,
         mermaid: {
           title: 'Binary Search Step Trace: ค้นหาเลข 50 ใน Array ที่เรียงแล้ว [10, 20, 30, 40, 50, 60, 70]',

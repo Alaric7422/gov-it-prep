@@ -9,6 +9,8 @@
   var VIEW_IDS = {
     dashboard: 'view-dashboard',
     lesson: 'view-lesson',
+    'diagrams-lab': 'view-diagrams-lab',
+    'sql-guide': 'view-sql-guide',
     flashcards: 'view-flashcards',
     'sql-sandbox': 'view-sql-sandbox',
     'mock-exam': 'view-mock-exam',
@@ -170,6 +172,29 @@
       html += '</div>';
     }
 
+    // Written-Exam Deep-Dive Hubs
+    html += '<div class="nav-group">';
+    html += '<div class="nav-group-label"><span>เจาะลึกข้อเขียน (พื้นฐาน → สอบจริง)</span></div>';
+    html += '<ul class="nav-list">';
+    html += buildNavItemHtml(
+      'diagrams-lab',
+      'fa-solid fa-diagram-project',
+      'คู่มือ Diagram & ออกแบบระบบ',
+      '',
+      false,
+      activeRoute === 'diagrams-lab'
+    );
+    html += buildNavItemHtml(
+      'sql-guide',
+      'fa-solid fa-terminal',
+      'คู่มือคำสั่ง SQL ครบทุกคำสั่ง',
+      '',
+      false,
+      activeRoute === 'sql-guide'
+    );
+    html += '</ul>';
+    html += '</div>';
+
     // Practice Tools & Guide
     html += '<div class="nav-group">';
     html += '<div class="nav-group-label"><span>เครื่องมือฝึกซ้อม & คู่มือ</span></div>';
@@ -214,7 +239,7 @@
   }
 
   function parseHashRoute() {
-    var rawHash = (global.location.hash || '').replace(/^#\/?/, '').trim();
+    var rawHash = (global.location.hash || '').replace(/^#\/?/, '').replace(/\/+$/, '').trim();
     if (!rawHash) {
       var gp = GP();
       var last = gp.state && typeof gp.state.getLastRoute === 'function' ? gp.state.getLastRoute() : 'dashboard';
@@ -299,6 +324,12 @@
       } else {
         cleanRoute = 'dashboard';
       }
+    } else if (cleanRoute === 'diagrams-lab') {
+      viewKey = 'diagrams-lab';
+      titlePrefix = 'คู่มือ Diagram & ออกแบบระบบ';
+    } else if (cleanRoute === 'sql-guide') {
+      viewKey = 'sql-guide';
+      titlePrefix = 'คู่มือคำสั่ง SQL ครบทุกคำสั่ง';
     } else if (cleanRoute === 'flashcards') {
       viewKey = 'flashcards';
       titlePrefix = 'บัตรคำศัพท์ (Flashcards)';
@@ -336,6 +367,16 @@
             views.lesson.render(sectionEl, lessonId);
             renderedViews.lesson = true;
             currentLessonId = lessonId;
+          }
+        } else if (viewKey === 'diagrams-lab' && views.diagramsLab && typeof views.diagramsLab.render === 'function') {
+          if (!renderedViews['diagrams-lab']) {
+            views.diagramsLab.render(sectionEl);
+            renderedViews['diagrams-lab'] = true;
+          }
+        } else if (viewKey === 'sql-guide' && views.sqlGuide && typeof views.sqlGuide.render === 'function') {
+          if (!renderedViews['sql-guide']) {
+            views.sqlGuide.render(sectionEl);
+            renderedViews['sql-guide'] = true;
           }
         } else if (viewKey === 'flashcards' && views.flashcards && typeof views.flashcards.render === 'function') {
           if (!renderedViews.flashcards) {

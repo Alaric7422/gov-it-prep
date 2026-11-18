@@ -14,7 +14,7 @@
     order: 2,
     title: 'ระบบฐานข้อมูลเชิงสัมพันธ์ Normalization ER-Diagram และ SQL',
     shortTitle: 'ฐานข้อมูล & SQL',
-    subtitle: 'เจาะลึก RDBMS, Keys, ACID, การออกแบบ ER Diagram 1:1/1:N/M:N, การทำ Normalization 1NF-3NF และฝึกเขียน SQL คิวรีข้อมูลที่ดินจริง',
+    subtitle: 'ปูพื้นตั้งแต่ศูนย์: ฐานข้อมูลต่างจาก Excel อย่างไร, Table/NULL, Keys ทุกชนิด, Transaction & ACID, อ่าน ER Diagram & แตก M:N, Normalization 1NF-3NF และฝึกเขียน SQL JOIN จริง',
     estimatedMinutes: 22,
     icon: 'fa-solid fa-database',
     heroVisual: {
@@ -27,93 +27,197 @@
       prompt: 'Clean flat isometric tech illustration in Cadastral GIS & Tech Studio palette (emerald #0F5E4D, amber #D97706, off-white #F4F7F6). Relational database entity-relationship diagram floating like crisp blueprint cards: LAND_OFFICE, USER, LAND_PLOT, and TRANSACTION tables connected by glowing golden key icons (PK and FK) and structured 1:N crow-foot lines. Subtle cadastral map grid lines in the background. Clean modern educational style.'
     },
     summaryTakeaways: [
-      'Primary Key (PK) ต้องไม่ซ้ำและห้ามเป็น NULL ส่วน Foreign Key (FK) ใช้เชื่อมโยงข้ามตารางเพื่อรักษา Referential Integrity',
-      'คุณสมบัติ ACID (Atomicity, Consistency, Isolation, Durability) รับประกันความปลอดภัยเมื่อเกิดธุรกรรมพร้อมกันหรือไฟดับกลางคัน',
-      'ความสัมพันธ์ M:N ใน ER Diagram ต้องแตกเป็นตารางเชื่อมกลาง (Junction Table) เสมอเมื่อนำไปสร้างเป็นตารางจริงใน RDBMS',
-      '1NF = ข้อมูลเป็นหน่วยย่อย (Atomic) ไม่มีกลุ่มซ้ำ, 2NF = ปลอด Partial Dependency, 3NF = ปลอด Transitive Dependency',
-      'ลำดับการทำงานจริงของ SQL คือ FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT (WHERE กรองก่อนจัดกลุ่ม, HAVING กรองหลังจัดกลุ่ม)'
+      'NULL ไม่ใช่เลข 0 และไม่ใช่ข้อความว่าง "" แต่หมายถึง "ไม่ทราบค่า/ยังไม่มีข้อมูล" จึงต้องตรวจสอบด้วย IS NULL ห้ามใช้ = NULL',
+      'ลำดับคีย์: Super Key (ระบุแถวได้ไม่ซ้ำ) → Candidate Key (Super Key ที่เล็กสุด) → Primary Key (เลือกใช้ 1 ชุด, ห้ามซ้ำ, ห้าม NULL) และ Foreign Key (เชื่อมตารางรักษา Referential Integrity)',
+      'Transaction ใช้ COMMIT (ยืนยันถาวร) และ ROLLBACK (ย้อนกลับทั้งหมด) ภายใต้กฎ ACID: Atomicity, Consistency, Isolation, Durability',
+      'ใน ER Diagram ความสัมพันธ์ M:N ไม่สามารถสร้างใน RDBMS ตรงๆ ได้ ต้องแตกเป็นตารางเชื่อมกลาง (Junction Table) เพื่อเปลี่ยนเป็น 1:N สองข้างเสมอ',
+      'Normalization แก้ปัญหา Insert/Update/Delete Anomaly: 1NF = ค่าเป็น Atomic ไม่มีกลุ่มซ้ำ, 2NF = ปลอด Partial Dependency, 3NF = ปลอด Transitive Dependency',
+      'ลำดับการทำงานจริงของ SQL คือ FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT (WHERE กรองแถวก่อนจัดกลุ่ม, HAVING กรองกลุ่มหลังรวมผล)'
     ],
     sections: [
       {
         id: 'rdbms-keys',
         title: '1. หัวใจของ RDBMS, ชนิดของ Keys และคุณสมบัติ ACID',
         analogyBox: {
-          title: 'เปรียบเทียบให้เห็นภาพ: ตู้ทะเบียนราษฎร์ที่เชื่อมกันด้วยเลขบัตร',
-          body: 'หากสำนักงานจดทะเบียนบันทึก <em>ชื่อ-ที่อยู่-เบอร์โทรเจ้าของที่ดิน</em> ซ้ำลงไปในเอกสารทุกแปลงเวลาโอน พอเจ้าของย้ายบ้านครั้งเดียว เจ้าหน้าที่ต้องตามแก้ทุกแฟ้มและอาจตกหล่น!<br>แนวคิดของ <strong>RDBMS (Relational Database Management System)</strong> คือเก็บข้อมูล <strong>"คน"</strong> ไว้ที่แฟ้ม <code>users</code> เพียงที่เดียว (มีเลขรหัสประจำตัวไม่ซ้ำ = <strong>Primary Key</strong>) แล้วแฟ้ม <code>land_plots</code> แค่อ้างอิงเลขรหัสนั้นมาใช้ (<strong>Foreign Key</strong>) แก้ที่อยู่จุดเดียว ข้อมูลอัปเดตถูกต้องตรงกันทั้งระบบ'
+          title: 'เปรียบเทียบให้เห็นภาพ: ตู้ทะเบียนราษฎร์ที่เชื่อมกันด้วยเลขรหัส + ภารกิจโอนเงิน/โอนที่ดิน',
+          body: 'หากสำนักงานจดทะเบียนพิมพ์ <em>ชื่อ-ที่อยู่-เบอร์โทรเจ้าของที่ดิน</em> ซ้ำลงไปในแฟ้มโฉนดทุกแปลงเวลาโอน พอเจ้าของย้ายบ้านครั้งเดียว เจ้าหน้าที่ต้องตามแก้แฟ้มเป็นร้อยเล่มและมีโอกาสตกหล่นเพี้ยนสูงมาก!<br>แนวคิดของ <strong>RDBMS (Relational Database Management System)</strong> คือแยกเก็บข้อมูล <strong>"คน"</strong> ไว้ที่แฟ้ม <code>users</code> เพียงที่เดียว (มีเลขรหัสประจำตัวไม่ซ้ำ = <strong>Primary Key</strong>) แล้วแฟ้ม <code>land_plots</code> แค่อ้างอิงเลขรหัสนั้นมาใช้ (<strong>Foreign Key</strong>) แก้ที่อยู่จุดเดียว ข้อมูลอัปเดตถูกต้องตรงกันทั้งระบบครับ'
         },
         bodyHtml: `
-<p>ฐานข้อมูลเชิงสัมพันธ์ (RDBMS เช่น PostgreSQL, MySQL, Oracle, SQL Server, SQLite) จัดเก็บข้อมูลในรูปแบบ<strong>ตาราง (Table / Relation)</strong> ประกอบด้วย<strong>แถว (Row / Record / Tuple)</strong> และ<strong>คอลัมน์ (Column / Field / Attribute)</strong> โดยมีกฎควบคุมความถูกต้องของข้อมูลที่ออกสอบบ่อยดังนี้ครับ</p>
+<h3>1.1 Database และ DBMS / RDBMS คืออะไร? ทำไมไม่ใช้แค่ Excel เก็บข้อมูล?</h3>
+<ul>
+  <li><strong>Database (ฐานข้อมูล):</strong> คือแหล่งเก็บรวบรวมข้อมูลที่มีความสัมพันธ์กันอย่างเป็นระบบ เพื่อให้ค้นหา แก้ไข และนำมาใช้วิเคราะห์ได้รวดเร็ว</li>
+  <li><strong>DBMS (Database Management System):</strong> คือ "ซอฟต์แวร์บรรณารักษ์" ที่ทำหน้าที่บริหารจัดการฐานข้อมูล ตรวจสิทธิ์ ควบคุมการแก้ไขพร้อมกัน และสำรองกู้คืนข้อมูล</li>
+  <li><strong>RDBMS (Relational DBMS):</strong> คือ DBMS ชนิดที่จัดเก็บข้อมูลในรูปแบบ<strong>ตารางสองมิติ (Tables)</strong> ที่เชื่อมโยงกันได้ด้วยคีย์ (เช่น <em>PostgreSQL, MySQL, Oracle, SQL Server, SQLite</em>) ซึ่งเป็นมาตรฐานหลักของระบบงานภาครัฐ</li>
+</ul>
+<p>คำถามยอดฮิตของมือใหม่คือ <strong>"ในเมื่อ Excel ก็เป็นตารางเหมือนกัน ทำไมหน่วยงานไม่ใช้ Excel เก็บข้อมูลทั้งหมด?"</strong> คำตอบมี 4 ข้อสำคัญครับ:</p>
+<ol>
+  <li><strong>การทำงานพร้อมกันหลายคน (Multi-user &amp; Locking):</strong> ถ้าเจ้าหน้าที่ 462 สาขาเปิดแก้ไฟล์ Excel เดียวกันพร้อมกัน ไฟล์จะชนกันหรือพัง แต่ RDBMS มีระบบล็อกระดับแถว (Row-level Locking) ให้คนหลายพันคนอ่าน-เขียนพร้อมกันได้</li>
+  <li><strong>การบังคับความถูกต้องอัตโนมัติ (Data Integrity):</strong> ใน Excel ใครจะพิมพ์ตัวอักษรใส่ช่องราคา หรือพิมพ์รหัสสำนักงานที่ไม่มีอยู่จริงก็ได้ แต่ RDBMS มีกฎ <em>Constraints</em> (<code>PRIMARY KEY</code>, <code>FOREIGN KEY</code>, <code>NOT NULL</code>, <code>CHECK</code>) คอยดักจับทันทีก่อนบันทึก</li>
+  <li><strong>ความเร็วกับข้อมูลหลักล้านแถว (Indexing):</strong> Excel ที่มีข้อมูล 500,000+ แถวจะเปิดอืดหรือค้าง แต่ RDBMS มีดัชนี (<em>Index</em>) ช่วยค้นหาเจอภายในเสี้ยววินาที</li>
+  <li><strong>ความปลอดภัยและกู้คืน (Security &amp; Recovery):</strong> RDBMS กำหนดสิทธิ์แยกตามตาราง/ผู้ใช้ และมีระบบ Transaction Log ช่วยกู้ข้อมูลเมื่อไฟดับกลางคันได้</li>
+</ol>
 
-<h3>ชนิดของ Key ที่ต้องแม่นก่อนเข้าห้องสอบ</h3>
+<h3>1.2 โครงสร้างตาราง, Data Types และความหมายที่แท้จริงของ <code>NULL</code></h3>
+<p>ในภาษาวิชาการฐานข้อมูล คำศัพท์ของตารางจะเรียกได้หลายชื่อ (ข้อสอบชอบสลับคำเรียกมาหลอก!):</p>
+<ul>
+  <li><strong>Table = Relation:</strong> ตารางเก็บข้อมูลเรื่องเดียวกัน (เช่น ตาราง <code>land_plots</code>)</li>
+  <li><strong>Row = Record = Tuple:</strong> ข้อมูล 1 แถวในแนวนอน (แทนสิ่งของหรือเหตุการณ์ 1 รายการ เช่น โฉนด 1 แปลง)</li>
+  <li><strong>Column = Field = Attribute:</strong> หัวข้อคุณสมบัติในแนวตั้ง (เช่น <code>deed_no</code>, <code>appraised_price_per_wah</code>)</li>
+  <li><strong>Data Types (ชนิดข้อมูล):</strong> การกำหนดประเภทของข้อมูลในแต่ละคอลัมน์เพื่อความแม่นยำและประหยัดพื้นที่ เช่น <code>INT</code> (จำนวนเต็ม), <code>NUMERIC / DECIMAL</code> (ตัวเลขทศนิยมที่ต้องการความเป๊ะ เช่น เงิน/พื้นที่ตารางวา), <code>VARCHAR / TEXT</code> (ข้อความ), <code>DATE / TIMESTAMP</code> (วันที่/เวลา), <code>BOOLEAN</code> (จริง/เท็จ)</li>
+</ul>
+
+<div class="callout callout-warn">
+  <strong><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> ระวังโดนหลอก! <code>NULL</code> คืออะไร?</strong>
+  <p style="margin-top:0.4rem; margin-bottom:0;"><strong><code>NULL</code> ไม่ใช่เลข <code>0</code> และไม่ใช่ข้อความว่าง <code>""</code></strong> แต่หมายถึง <strong>"ยังไม่ทราบค่า / ยังไม่ได้กรอกข้อมูล (Unknown / Missing)"</strong> เช่น ราคาประเมิน <code>0</code> บาท แปลว่าประเมินแล้วได้ 0 บาท แต่ราคาประเมิน <code>NULL</code> แปลว่า <em>ยังไม่มีผลการประเมิน</em>!<br>
+  และใน SQL เรา<strong>ห้ามเขียน <code>WHERE price = NULL</code></strong> (จะได้ผลลัพธ์ว่างเปล่าเสมอ เพราะค่าที่ "ไม่รู้" เทียบเท่ากับ "ไม่รู้" ไม่ได้) ต้องเขียนว่า <strong><code>WHERE price IS NULL</code></strong> หรือ <strong><code>IS NOT NULL</code></strong> เท่านั้นครับ!</p>
+</div>
+
+<h3>1.3 เจาะลึก Keys ทุกชนิดทีละขั้นจากข้อมูลตัวอย่างจริง</h3>
+<p>ลองดูตารางตัวอย่างเล็กๆ <code>PLOTS_SAMPLE</code> (4 แถว) ด้านล่างนี้ เพื่อทำความเข้าใจตั้งแต่ Super Key ไล่มาจนถึง Foreign Key แบบเห็นภาพชัดที่สุดครับ:</p>
 <div class="table-wrap">
   <table>
-    <caption>ตารางสรุปชนิดของคีย์ในฐานข้อมูลเชิงสัมพันธ์</caption>
+    <caption>ตารางตัวอย่าง PLOTS_SAMPLE สำหรับไล่ดูชนิดของคีย์</caption>
     <thead>
       <tr>
-        <th scope="col">ชนิดของ Key</th>
-        <th scope="col">ความหมายและคุณสมบัติสำคัญ</th>
-        <th scope="col">ตัวอย่างจากระบบกรมที่ดิน</th>
+        <th scope="col">plot_id</th>
+        <th scope="col">deed_no</th>
+        <th scope="col">office_id</th>
+        <th scope="col">zone_type</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <th scope="row">Super Key</th>
-        <td>คอลัมน์เดียวหรือหลายคอลัมน์รวมกันที่ระบุตัวตนแถวได้ไม่ซ้ำ (อาจมีคอลัมน์เกินจำเป็นติดมาด้วย)</td>
-        <td><code>{plot_id, deed_no}</code> หรือ <code>{plot_id, zone_type}</code></td>
+        <td>101</td>
+        <td>น.ส.4จ-500</td>
+        <td>OF-01</td>
+        <td>ที่อยู่อาศัย</td>
       </tr>
       <tr>
-        <th scope="row">Candidate Key</th>
-        <td>Super Key ที่น้อยที่สุด (Minimal) ไม่ซ้ำและไม่มีคอลัมน์ส่วนเกิน พร้อมจะถูกเลือกเป็น PK</td>
-        <td><code>plot_id</code> หรือ <code>(deed_no, office_id)</code></td>
+        <td>102</td>
+        <td>น.ส.4จ-501</td>
+        <td>OF-01</td>
+        <td>พาณิชยกรรม</td>
       </tr>
       <tr>
-        <th scope="row">Primary Key (PK)</th>
-        <td>Candidate Key ที่ถูกเลือกเป็นกุญแจหลักประจำตาราง มีได้ชุดเดียวต่อตาราง <strong>ห้ามซ้ำ (Unique) และห้ามเป็นค่าว่าง (NOT NULL)</strong></td>
-        <td><code>plot_id</code> ในตาราง <code>land_plots</code></td>
+        <td>103</td>
+        <td>น.ส.4จ-500</td>
+        <td>OF-02</td>
+        <td>เกษตรกรรม</td>
       </tr>
       <tr>
-        <th scope="row">Alternate Key</th>
-        <td>Candidate Key ตัวอื่นๆ ที่ไม่ได้ถูกเลือกเป็น Primary Key</td>
-        <td>เลขบัตรประชาชน (กรณีใช้ <code>user_id</code> เป็น PK)</td>
-      </tr>
-      <tr>
-        <th scope="row">Composite Key</th>
-        <td>Primary Key ที่ประกอบขึ้นจาก <strong>2 คอลัมน์ขึ้นไปร่วมกัน</strong> จึงจะไม่ซ้ำ</td>
-        <td><code>(tx_id, item_seq)</code> ในตารางรายการย่อย</td>
-      </tr>
-      <tr>
-        <th scope="row">Foreign Key (FK)</th>
-        <td>คอลัมน์ที่อ้างอิงไปหา PK (หรือ Unique Key) ของอีกตาราง เพื่อรักษา <strong>Referential Integrity</strong> (ห้ามอ้างรหัสที่ไม่มีอยู่จริง)</td>
-        <td><code>office_id</code> และ <code>owner_id</code> ในตาราง <code>land_plots</code></td>
+        <td>104</td>
+        <td>น.ส.4จ-888</td>
+        <td>OF-02</td>
+        <td>ที่อยู่อาศัย</td>
       </tr>
     </tbody>
   </table>
 </div>
+<p>สังเกตดูนะครับ: <code>deed_no</code> ตัวเดียวซ้ำได้ข้ามจังหวัด (<code>น.ส.4จ-500</code> มีทั้งที่ <code>OF-01</code> และ <code>OF-02</code>) และ <code>zone_type</code> ก็ซ้ำได้ (<code>ที่อยู่อาศัย</code> มี 2 แถว) ทีนี้มาไล่จับคู่คีย์ทีละขั้น:</p>
+<ol>
+  <li><strong>Super Key (คีย์ใหญ่ที่แยกแถวไม่ซ้ำ):</strong> คอลัมน์หรือกลุ่มคอลัมน์ใดๆ ที่รวมกันแล้วระบุแถวได้ไม่ซ้ำแน่นอน <em>แม้จะมีคอลัมน์ส่วนเกินติดมาด้วยก็ตาม</em> เช่น <code>{plot_id}</code>, <code>{plot_id, zone_type}</code>, <code>{deed_no, office_id}</code>, หรือแม้แต่เอาทุกคอลัมน์มารวมกันก็เป็น Super Key</li>
+  <li><strong>Candidate Key (ตัวเต็งคีย์หลัก):</strong> คัดเฉพาะ Super Key ที่<strong>กะทัดรัดที่สุด (Minimal) ไม่มีคอลัมน์ส่วนเกิน</strong> จากตารางตัวอย่างจะได้ Candidate Key 2 ชุด คือ:
+    <ul>
+      <li>ชุดที่ 1: <code>plot_id</code> (แค่ตัวเดียวก็ไม่ซ้ำแล้ว — <code>{plot_id, zone_type}</code> ไม่ใช่ Candidate Key เพราะตัด <code>zone_type</code> ทิ้งได้!)</li>
+      <li>ชุดที่ 2: <code>(deed_no, office_id)</code> (เลขโฉนด + สำนักงานที่ดิน 2 ตัวรวมกันจะไม่ซ้ำแน่นอน และตัดตัวใดตัวหนึ่งออกไม่ได้)</li>
+    </ul>
+  </li>
+  <li><strong>Primary Key (PK — คีย์หลักตัวจริง):</strong> Candidate Key ที่นักออกแบบเลือกมาใช้เป็นตัวแทนแถว <strong>มีได้แค่ 1 ชุดต่อตาราง</strong> โดยมีกฎเหล็ก 2 ข้อคือ <strong>ห้ามซ้ำ (Unique)</strong> และ <strong>ห้ามว่าง (NOT NULL)</strong> ในตัวอย่างนี้เราเลือก <code>plot_id</code> เป็น PK</li>
+  <li><strong>Alternate Key (คีย์สำรอง):</strong> Candidate Key ตัวที่เหลือที่<em>ไม่ได้</em>ถูกเลือกเป็น Primary Key ในตัวอย่างนี้ก็คือ <code>(deed_no, office_id)</code> (หรือในตาราง <code>users</code> ถ้าเลือก <code>user_id</code> เป็น PK เลขบัตรประชาชนก็จะเป็น Alternate Key)</li>
+  <li><strong>Composite Key (คีย์รวม):</strong> Primary Key ที่เกิดจากการนำ <strong>2 คอลัมน์ขึ้นไปมัดรวมกัน</strong> เพราะคอลัมน์เดียวไม่พอจะไม่ซ้ำ เช่น ตารางรายการค่าธรรมเนียมย่อยในใบเสร็จ <code>TX_ITEMS</code> ที่มี <code>(tx_id, item_seq)</code> เป็น PK ร่วมกัน (ใบเสร็จ 101 มีรายการที่ 1, 2)</li>
+  <li><strong>Foreign Key (FK — กุญแจนอก):</strong> คอลัมน์ในตารางลูกที่นำค่าไปอ้างอิงหา PK ของตารางแม่ เช่น <code>office_id</code> ในตาราง <code>land_plots</code> ชี้ไปหา <code>office_id</code> (PK) ในตาราง <code>land_offices</code></li>
+</ol>
 
-<h3>คุณสมบัติ ACID ของ Transaction (ออกสอบระบบงานสำคัญประจำ!)</h3>
-<p>เมื่อประชาชนจดทะเบียนโอนขายที่ดิน 1 แปลง ระบบต้องเปลี่ยนชื่อผู้ถือกรรมสิทธิ์<em>พร้อมกับ</em>บันทึกใบเสร็จค่าธรรมเนียมใน Transaction เดียวกัน จะสำเร็จครึ่งๆ กลางๆ ไม่ได้ จึงต้องพึ่งหลัก <strong>ACID</strong>:</p>
+<div class="callout callout-info">
+  <strong><i class="fa-solid fa-link" aria-hidden="true"></i> Referential Integrity ในทางปฏิบัติแปลว่าอะไร?</strong>
+  <p style="margin-top:0.4rem; margin-bottom:0;"><strong>Referential Integrity (ความคงสภาพการอ้างอิง)</strong> คือกฎที่ห้าม Foreign Key อ้างถึงสิ่งที่ไม่มีอยู่จริงในตารางแม่ ส่งผลจริง 2 อย่างคือ:<br>
+  1) <strong>ห้ามแทรกลูกเถื่อน:</strong> เราจะ <code>INSERT</code> แปลงที่ดินที่มี <code>office_id = 99</code> ไม่ได้ ถ้าในตาราง <code>land_offices</code> ไม่มีสำนักงานรหัส <code>99</code> อยู่จริง<br>
+  2) <strong>ห้ามลบแม่ทิ้งดื้อๆ:</strong> เราจะ <code>DELETE</code> สำนักงาน <code>OF-01</code> ออกจาก <code>land_offices</code> ไม่ได้ หากยังมีแถวแปลงที่ดินชี้มาหา <code>OF-01</code> ค้างอยู่ (ยกเว้นกำหนดนโยบาย <code>ON DELETE CASCADE</code> หรือลบ/ย้ายแปลงลูกออกก่อน)</p>
+</div>
+
+<h3>1.4 Transaction, COMMIT / ROLLBACK และคุณสมบัติ ACID</h3>
+<p><strong>Transaction (ทรานแซกชัน)</strong> คือกลุ่มของคำสั่ง SQL หลายคำสั่งที่ต้องถูกมัดรวมเสมือน <strong>"ภารกิจเดียว"</strong> เช่น เมื่อประชาชนมาจดทะเบียนโอนขายที่ดิน 1 แปลง ระบบต้องทำ 2 คำสั่งติดกัน: (1) <code>UPDATE land_plots</code> เปลี่ยน <code>owner_id</code> เป็นผู้ซื้อ และ (2) <code>INSERT INTO transactions</code> บันทึกประวัติ + ค่าธรรมเนียม</p>
 <ul>
-  <li><strong>A — Atomicity (ความเป็นหนึ่งเดียว):</strong> "All or Nothing" ต้องสำเร็จครบทุกคำสั่ง (<code>COMMIT</code>) หรือหากเกิดข้อผิดพลาด/ไฟดับระหว่างทาง ต้องย้อนกลับสภาพเดิมทั้งหมด (<code>ROLLBACK</code>)</li>
-  <li><strong>C — Consistency (ความถูกต้องสอดคล้อง):</strong> หลังจบ Transaction ข้อมูลต้องเป็นไปตามกฎ Constraint ทั้งหมด เช่น ยอดเงินหรือ Foreign Key ไม่เพี้ยน</li>
-  <li><strong>I — Isolation (ความเป็นอิสระต่อกัน):</strong> แม้มีเจ้าหน้าที่หลายร้อยคนใช้งานพร้อมกัน Transaction หนึ่งต้องไม่รบกวนผลลัพธ์ระหว่างทำงานของอีกตัว (Concurrency Control)</li>
-  <li><strong>D — Durability (ความคงทนถาวร):</strong> เมื่อระบบแจ้งว่า <code>COMMIT</code> สำเร็จแล้ว ข้อมูลจะถูกบันทึกถาวรลง Storage แม้เซิร์ฟเวอร์ดับทันทีหลังจากนั้นข้อมูลก็ไม่หาย</li>
+  <li><strong><code>COMMIT</code>:</strong> สั่งยืนยันให้บันทึกผลลัพธ์ของทุกคำสั่งใน Transaction นั้นลงฐานข้อมูลอย่างถาวร</li>
+  <li><strong><code>ROLLBACK</code>:</strong> สั่งยกเลิกและย้อนกลับไปสภาพเดิมก่อนเริ่ม Transaction ทั้งหมด (ใช้เมื่อเกิด Error หรือยกเลิกรายการกลางทาง)</li>
+</ul>
+<p>เพื่อให้การโอนที่ดินหรือการเงินปลอดภัย 100% ฐานข้อมูล RDBMS ต้องมีคุณสมบัติ <strong>ACID</strong> ทั้ง 4 ข้อนี้:</p>
+<ul>
+  <li><strong>A — Atomicity (ความเป็นหนึ่งเดียว / All or Nothing):</strong> ต้องทำสำเร็จครบทุกคำสั่ง (<code>COMMIT</code>) หรือถ้าเกิดไฟดับ/พังระหว่างทางหลังเปลี่ยนชื่อเจ้าของไปแล้วแต่ยังไม่ออกใบเสร็จ ระบบต้องย้อนกลับ (<code>ROLLBACK</code>) คืนชื่อเจ้าของเดิมทั้งหมด จะไม่ยอมให้สำเร็จครึ่งๆ กลางๆ</li>
+  <li><strong>C — Consistency (ความถูกต้องสอดคล้องตามกฎ):</strong> ก่อนและหลัง Transaction ข้อมูลต้องถูกต้องตามกฎ <em>Constraints</em> ทุกข้อเสมอ เช่น ค่าธรรมเนียมห้ามติดลบ, รหัส <code>owner_id</code> ต้องมีอยู่จริงในตาราง <code>users</code> หากผิดกฎระบบจะปฏิเสธทั้ง Transaction</li>
+  <li><strong>I — Isolation (ความเป็นอิสระต่อกัน):</strong> แม้มีเจ้าหน้าที่ 500 คนใช้งานพร้อมกัน Transaction ของคนหนึ่งต้องไม่ไปแอบอ่านค่าที่ยังไม่ <code>COMMIT</code> ของอีกคน (ป้องกันปัญหา Dirty Read หรือแก้ไขทับกันจนยอดเพี้ยน)</li>
+  <li><strong>D — Durability (ความคงทนถาวร):</strong> ทันทีที่ระบบตอบว่า <code>COMMIT</code> สำเร็จแล้ว ข้อมูลจะถูกเขียนลง Log/Storage อย่างถาวร ต่อให้เซิร์ฟเวอร์ปลั๊กหลุดดับวูบในวินาทีถัดไป ข้อมูลที่โอนสำเร็จแล้วก็ไม่มีวันหายครับ</li>
 </ul>`
       },
       {
         id: 'er-diagram',
         title: '2. การออกแบบ ER Diagram และความสัมพันธ์ 1:1, 1:N, M:N',
+        analogyBox: {
+          title: 'เปรียบเทียบให้เห็นภาพ: พิมพ์เขียวสถาปนิกก่อนก่อสร้างบ้าน',
+          body: 'ก่อนช่างจะก่ออิฐฉาบปูน (พิมพ์คำสั่ง <code>CREATE TABLE</code>) สถาปนิกต้องวาด<strong>พิมพ์เขียว (ER Diagram)</strong> ให้ดูทั้งภาพก่อนว่ามีห้องอะไรบ้าง (<strong>Entity</strong>) แต่ละห้องมีรายละเอียดอะไร (<strong>Attribute</strong>) และประตูเชื่อมห้องไหนต่อกับห้องไหนแบบ 1 ต่อ 1, 1 ต่อหลาย หรือหลายต่อหลาย (<strong>Relationship &amp; Cardinality</strong>) เพื่อไม่ให้สร้างฐานข้อมูลผิดทางจนต้องรื้อทำใหม่ครับ'
+        },
         bodyHtml: `
-<p>ก่อนเขียนคำสั่ง <code>CREATE TABLE</code> นักวิเคราะห์ระบบจะวาด <strong>ER Diagram (Entity-Relationship Diagram)</strong> เพื่อมองภาพรวมของข้อมูลและความสัมพันธ์ (Cardinality) ระหว่าง Entity:</p>
-
+<h3>2.1 ER Diagram คืออะไร? และองค์ประกอบ 3 อย่าง</h3>
+<p><strong>ER Diagram (Entity-Relationship Diagram)</strong> คือแผนภาพจำลองโครงสร้างข้อมูลเชิงแนวคิดก่อนนำไปสร้างเป็นตารางจริง ประกอบด้วย 3 ส่วนหลัก:</p>
 <ul>
-  <li><strong>1:1 (One-to-One):</strong> หนึ่งแถวของ A คู่กับไม่เกินหนึ่งแถวของ B เช่น 1 แปลงที่ดิน มี 1 ข้อมูลพิกัดจุดศูนย์กลางระวาง</li>
-  <li><strong>1:N (One-to-Many):</strong> ความสัมพันธ์ยอดฮิตที่สุด — ฝั่ง "One" นำ PK ของตัวเองไปวางเป็น <strong>FK ในฝั่ง "Many"</strong> เช่น 1 สำนักงานที่ดิน (<code>land_offices</code>) ดูแลได้หลายแปลงที่ดิน (<code>land_plots</code>) ดังนั้นจึงนำ <code>office_id</code> ไปเป็น FK ในตาราง <code>land_plots</code></li>
-  <li><strong>M:N (Many-to-Many):</strong> เช่น เจ้าของที่ดิน 1 คนถือครองร่วมกันได้หลายแปลง และ 1 แปลงก็มีผู้ถือกรรมสิทธิ์ร่วมได้หลายคน ในฐานข้อมูลเชิงสัมพันธ์ไม่สามารถใส่ M:N ตรงๆ ได้ <strong>ต้องแตกเป็นตารางเชื่อมกลาง (Junction / Associative Table)</strong> เสมอ (กลายเป็น 1:N สองข้างชนกัน)</li>
+  <li><strong>Entity (เอนทิตี):</strong> สิ่งของ บุคคล สถานที่ หรือเหตุการณ์ที่เราต้องการเก็บข้อมูล (เทียบเท่า <strong>1 ตาราง</strong>) เช่น <code>LAND_OFFICE</code>, <code>USER</code>, <code>LAND_PLOT</code>, <code>TRANSACTION</code></li>
+  <li><strong>Attribute (แอตทริบิวต์):</strong> รายละเอียดหรือคุณสมบัติของ Entity นั้นๆ (เทียบเท่า <strong>คอลัมน์</strong>) เช่น <code>deed_no</code>, <code>province</code></li>
+  <li><strong>Relationship (ความสัมพันธ์):</strong> เส้นเชื่อมแสดงความเกี่ยวข้องระหว่าง Entity พร้อมบอกจำนวนคู่สัมพันธ์ที่เรียกว่า <strong>Cardinality</strong></li>
 </ul>
+
+<h3>2.2 ความสัมพันธ์ 1:1, 1:N, M:N และวิธีอ่านสัญลักษณ์ Crow's Foot</h3>
+<p>ในแผนภาพ ER มาตรฐาน (รวมถึงแผนภาพ Mermaid ด้านล่าง) นิยมใช้เส้นแบบ<strong>ตีนกา (Crow's Foot Notation)</strong> เพื่อบอกจำนวนขั้นต่ำและสูงสุดที่จับคู่กันได้:</p>
+<ul>
+  <li>ขีดแนวตั้งคู่ <code>||</code> = <strong>1 พอดี</strong> (หนึ่งและหนึ่งเท่านั้น)</li>
+  <li>วงกลม + ขีด <code>|o</code> = <strong>0 หรือ 1</strong> (มีหรือไม่มีก็ได้ แต่ไม่เกิน 1)</li>
+  <li>ขีด + ตีนกา <code>|{</code> = <strong>1 หรือมากกว่า</strong> (อย่างน้อย 1 ตัว)</li>
+  <li>วงกลม + ตีนกา <code>o{</code> = <strong>0 หรือหลายตัว</strong> (ไม่มีเลยก็ได้ หรือมีหลายตัวก็ได้)</li>
+</ul>
+<p>ดังนั้นเมื่อเห็นเส้น <code>LAND_OFFICE ||--o{ LAND_PLOT</code> ให้อ่านจากซ้ายไปขวาว่า <em>"สำนักงานที่ดิน <strong>1 แห่ง</strong> ดูแลแปลงที่ดินได้ <strong>0 หรือหลายแปลง</strong>"</em> และอ่านย้อนจากขวาไปซ้ายว่า <em>"แปลงที่ดิน 1 แปลง สังกัดสำนักงานที่ดิน <strong>1 แห่งพอดี</strong>"</em> ครับ</p>
+
+<p>กฎการแปลงความสัมพันธ์ทั้ง 3 แบบเป็นตารางจริงใน RDBMS จำง่ายๆ ดังนี้:</p>
+<ul>
+  <li><strong>1:1 (One-to-One):</strong> หนึ่งแถวของ A คู่กับไม่เกินหนึ่งแถวของ B (เช่น 1 แปลงที่ดิน มี 1 ชุดเอกสารสิทธิ์ต้นฉบับ/พิกัดเฉพาะ) → นำ PK ของฝั่งหนึ่งไปวางเป็น FK (แบบ Unique) ในอีกฝั่ง</li>
+  <li><strong>1:N (One-to-Many):</strong> ความสัมพันธ์ยอดฮิตที่สุด — <strong>ให้นำ PK ของฝั่ง "1 (One)" ไปวางเป็น FK ในฝั่ง "N (Many)" เสมอ!</strong> เช่น 1 สำนักงาน (<code>land_offices</code>) ดูแลหลายแปลง (<code>land_plots</code>) จึงนำ <code>office_id</code> ไปวางเป็น FK ในตาราง <code>land_plots</code></li>
+  <li><strong>M:N (Many-to-Many):</strong> เช่น 1 แปลงมีเจ้าของร่วมหลายคน และเจ้าของ 1 คนก็ถือโฉนดได้หลายแปลง ใน RDBMS ไม่สามารถยัด M:N ลงในตารางตรงๆ ได้ (ห้ามใส่ <code>owner_id = "1, 2"</code> ในช่องเดียว!) <strong>จึงต้องแตกเป็น "ตารางเชื่อมกลาง (Junction / Associative Table)" เสมอ</strong> เพื่อเปลี่ยน M:N เป็น 1:N สองข้างชนกัน</li>
+</ul>
+
+<h3>2.3 ตัวอย่างแบบเห็นภาพชัดๆ: การแตกความสัมพันธ์ M:N เป็น Junction Table</h3>
+<p>สมมติโฉนด <code>plot_id = 1</code> มีผู้ถือกรรมสิทธิ์ร่วม 2 คนคือ <strong>นายสมชาย (user_id = 1)</strong> และ <strong>นางสาวพิมพ์ชนก (user_id = 2)</strong> คนละ 50% และนายสมชายยังถือโฉนด <code>plot_id = 2</code> อยู่ด้วย วิธีออกแบบที่ถูกต้องคือสร้างตารางเชื่อมกลางชื่อ <code>PLOT_OWNERS</code> ดังนี้ครับ:</p>
+<div class="table-wrap">
+  <table>
+    <caption>ตัวอย่างตารางเชื่อมกลาง PLOT_OWNERS ที่แตกจากความสัมพันธ์ M:N ระหว่าง LAND_PLOTS กับ USERS</caption>
+    <thead>
+      <tr>
+        <th scope="col">plot_id (PK, FK → LAND_PLOTS)</th>
+        <th scope="col">user_id (PK, FK → USERS)</th>
+        <th scope="col">share_percent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1 (น.ส.4จ-10452)</td>
+        <td>1 (นายสมชาย ใจดี)</td>
+        <td>50%</td>
+      </tr>
+      <tr>
+        <td>1 (น.ส.4จ-10452)</td>
+        <td>2 (นางสาวพิมพ์ชนก รักษ์ดิน)</td>
+        <td>50%</td>
+      </tr>
+      <tr>
+        <td>2 (น.ส.4จ-22891)</td>
+        <td>1 (นายสมชาย ใจดี)</td>
+        <td>100%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p>เห็นไหมครับว่า ตาราง <code>PLOT_OWNERS</code> ใช้ <code>(plot_id, user_id)</code> เป็น <strong>Composite Primary Key</strong> และแต่ละคอลัมน์ยังทำหน้าที่เป็น <strong>Foreign Key</strong> ชี้กลับไปหาตารางหลักทั้งสองข้าง กลายเป็นความสัมพันธ์ <code>LAND_PLOTS (1) ──&lt; PLOT_OWNERS (N)</code> และ <code>USERS (1) ──&lt; PLOT_OWNERS (N)</code> ที่สะอาดและสืบค้นด้วย SQL ได้อย่างแม่นยำครับ!</p>
 
 <div class="callout callout-info">
   <strong><i class="fa-solid fa-circle-info" aria-hidden="true"></i> โครงสร้างตารางจริงในลานซ้อม SQL ของแพลตฟอร์มนี้:</strong>
-  ด้านล่างคือแผนภาพ ER ของฐานข้อมูลจำลองกรมที่ดิน 4 ตาราง (<code>land_offices</code>, <code>users</code>, <code>land_plots</code>, <code>transactions</code>) ซึ่งคุณจะได้ลงมือรันคำสั่ง SQL จริงในหัวข้อถัดไปและหน้าลานซ้อม SQL!
+  ด้านล่างคือแผนภาพ ER ของฐานข้อมูลจำลองกรมที่ดิน 4 ตาราง (<code>land_offices</code>, <code>users</code>, <code>land_plots</code>, <code>transactions</code>) ซึ่งใช้ความสัมพันธ์แบบ 1:N ทั้งหมด และคุณจะได้ลงมือรันคำสั่ง SQL จริงในหัวข้อถัดไปครับ!
 </div>`,
         mermaid: {
           title: 'ER Diagram ระบบฐานข้อมูลทะเบียนที่ดิน (4 ตารางหลัก)',
@@ -158,14 +262,29 @@
         id: 'normalization',
         title: '3. Normalization (1NF → 2NF → 3NF) พร้อมตาราง Before / After',
         analogyBox: {
-          title: 'เปรียบเทียบให้เห็นภาพ: จัดระเบียบแฟ้มลดความซ้ำซ้อน',
-          body: 'ตารางที่ยังไม่ทำ Normalization จะเจอปัญหา <strong>3 Anomaly</strong>: <strong>Insert Anomaly</strong> (อยากเพิ่มรายชื่อสำนักงานที่ดินใหม่แต่ยังไม่มีแปลงที่ดินก็เพิ่มไม่ได้), <strong>Update Anomaly</strong> (เปลี่ยนชื่อสำนักงานต้องไล่แก้ทุกแถว), และ <strong>Delete Anomaly</strong> (ลบข้อมูลแปลงที่ดินเดียวที่มีอยู่ ทำให้ข้อมูลสำนักงานหายตามไปด้วย)'
+          title: 'เปรียบเทียบให้เห็นภาพ: แยกแฟ้มข้อมูลไม่ให้ซ้ำซ้อนและพังเวลาเพิ่ม/แก้/ลบ',
+          body: '<strong>Normalization</strong> เหมือนการจัดระเบียบตู้เอกสารที่เคยเขียนทุกอย่างปนในแผ่นเดียว ให้แยกเป็นแฟ้มเฉพาะทางที่มีรหัสอ้างอิงเชื่อมกัน เพื่อป้องกันอาการข้อมูลเพี้ยน 3 อย่างที่เรียกว่า <strong>Anomalies</strong> ครับ!'
         },
         bodyHtml: `
-<p>เรามาดูตัวอย่างจริงทีละขั้นจากตารางดิบ (Unnormalized Form: UNF) ที่รวมข้อมูลทุกอย่างปนกันในตารางเดียว แล้วค่อยๆ แปลงเป็น <strong>1NF → 2NF → 3NF</strong> แบบเห็นภาพชัดเจนครับ</p>
+<h3>3.1 Normalization คืออะไร? และปัญหา 3 Anomalies ถ้าไม่ทำ Normalization</h3>
+<p><strong>Normalization</strong> คือกระบวนการจัดโครงสร้างตารางฐานข้อมูลตามกฎเป็นลำดับขั้น (1NF → 2NF → 3NF) เพื่อ<strong>ลดความซ้ำซ้อนของข้อมูล (Redundancy)</strong> และ<strong>ป้องกันความผิดปกติในการเพิ่ม-แก้ไข-ลบข้อมูล (Anomalies)</strong> หากเราออกแบบตารางเดียวเก็บทุกอย่างปนกันหมด จะเจอปัญหาทั้ง 3 ข้อนี้ทันที:</p>
+<ul>
+  <li><strong>1. Insert Anomaly (เพิ่มข้อมูลที่ควรเพิ่มได้ไม่ได้):</strong> สมมติกรมที่ดินเปิด <em>"สำนักงานที่ดินสาขาใหม่"</em> แต่ยังไม่มีแปลงที่ดินมาจดทะเบียนเลย หากเรามีตารางเดียวที่ใช้เลขโฉนด <code>deed_no</code> เป็น PK เราจะไม่สามารถบันทึกรหัสและชื่อสำนักงานใหม่เข้าไปในระบบได้ เพราะ PK ห้ามเป็น <code>NULL</code>!</li>
+  <li><strong>2. Update Anomaly (แก้ไขข้อมูลไม่ครบแล้วขัดแย้งกัน):</strong> สมมติเจ้าของที่ดินชื่อ <em>"นายสมชาย ใจดี"</em> ถือครอง 200 แปลง แล้วไปจดทะเบียนเปลี่ยนชื่อ ถ้าเราเก็บชื่อซ้ำอยู่ในตารางโฉนดทั้ง 200 แถว แล้วตอนแก้เกิดผิดพลาดหรือเปลี่ยนไม่ครบ ระบบจะมีทั้งชื่อเก่าและชื่อใหม่ของคนเดียวกันปนกัน!</li>
+  <li><strong>3. Delete Anomaly (ลบเรื่องหนึ่ง แต่อีกเรื่องหายตามไปด้วย):</strong> สมมติสำนักงานที่ดินสาขา A มีแปลงที่ดินเหลือในตารางแค่ 1 แปลง เมื่อเกิดการเวนคืนและลบแถวแปลงที่ดินนั้นออก ข้อมูลชื่อและจังหวัดของสำนักงานสาขา A ที่มีอยู่แถวเดียวก็จะถูกลบหายสาบสูญไปด้วย!</li>
+</ul>
 
-<h3>Before: ตารางดิบก่อน Normalize (Unnormalized Form - UNF)</h3>
-<p>สังเกตว่าช่อง <code>tx_list</code> มีข้อมูลซ้อนหลายค่าในช่องเดียว (Repeating Group) และเก็บชื่อเจ้าของกับชื่อสำนักงานซ้ำทุกแถว</p>
+<h3>3.2 ปูศัพท์ 5 คำก่อนเริ่ม 1NF → 2NF → 3NF (เข้าใจ 5 คำนี้ ทำข้อสอบได้ทุกข้อ!)</h3>
+<ol>
+  <li><strong>Atomic Value (ค่าเชิงเดี่ยว/หน่วยย่อย):</strong> 1 ช่อง (Cell) ต้องเก็บข้อมูลเพียง <strong>1 ค่าเดียว</strong> เท่านั้น แตกย่อยเป็นรายการย่อยไม่ได้อีก (ห้ามยัดหลายรายการคั่นด้วยคอมมาในช่องเดียว)</li>
+  <li><strong>Repeating Group (กลุ่มข้อมูลซ้ำซ้อน):</strong> ช่องที่มีค่าซ้อนหลายรายการในช่องเดียว (เช่น <code>2025-01-10 โอนขาย, 2025-06-15 จำนอง</code>) หรือการสร้างคอลัมน์เผื่อซ้ำๆ (<code>tx_1</code>, <code>tx_2</code>, <code>tx_3</code>)</li>
+  <li><strong>Functional Dependency (<code>A → B</code> อ่านว่า "B ขึ้นอยู่กับ A"):</strong> หมายถึงถ้ารู้ค่า <code>A</code> แล้ว จะสามารถระบุค่า <code>B</code> ได้ถูกต้องแน่นอน เช่น รู้ <code>owner_id = U01</code> ย่อมรู้ทันทีว่า <code>owner_name = นายสมชาย ใจดี</code> (เขียนเป็น <code>owner_id → owner_name</code>)</li>
+  <li><strong>Partial Dependency (ขึ้นต่อคีย์หลักเพียงบางส่วน):</strong> เกิดเฉพาะเมื่อตารางมี <strong>Composite PK</strong> เช่น PK คือ <code>(deed_no, tx_date)</code> แต่คอลัมน์ <code>owner_name</code> ดันขึ้นกับแค่ <code>deed_no</code> ตัวเดียว ไม่ได้ขึ้นกับ <code>tx_date</code> เลย (รู้แค่เลขโฉนดก็รู้ชื่อเจ้าของแล้ว) — นี่คือปัญหาที่ต้องแก้ใน <strong>2NF</strong>!</li>
+  <li><strong>Transitive Dependency (ขึ้นต่อกันทางอ้อมเป็นลูกโซ่ <code>A → B → C</code>):</strong> คอลัมน์ที่ไม่ใช่คีย์ไปขึ้นต่อกับคอลัมน์ที่ไม่ใช่คีย์อีกตัวหนึ่ง เช่น <code>deed_no (PK) → office_id (Non-Key) → office_name (Non-Key)</code> กล่าวคือชื่อสำนักงานขึ้นกับรหัสสำนักงาน ไม่ได้ขึ้นกับเลขโฉนดโดยตรง — นี่คือปัญหาที่ต้องแก้ใน <strong>3NF</strong>!</li>
+</ol>
+
+<h3>3.3 Before: ตารางดิบก่อน Normalize (Unnormalized Form — UNF)</h3>
+<p>เรามาแปลงตารางดิบที่รวมข้อมูลทุกอย่างปนกันในตารางเดียวนี้ ไปสู่ <strong>1NF → 2NF → 3NF</strong> ทีละขั้นครับ สังเกตว่าช่อง <code>tx_list</code> ยังเป็น <strong>Repeating Group</strong> (มี 2 รายการซ้อนในช่องเดียว) และเก็บชื่อเจ้าของกับชื่อสำนักงานซ้ำทุกแถว:</p>
 <div class="table-wrap">
   <table>
     <caption>ตารางก่อน Normalize (UNF): มีค่าหลายค่าในช่องเดียวและข้อมูลซ้ำซ้อน</caption>
@@ -200,8 +319,8 @@
   </table>
 </div>
 
-<h3>ขั้นที่ 1 (1NF - First Normal Form): ค่าต้องเป็นหน่วยย่อย (Atomic) ไม่มีกลุ่มซ้ำ</h3>
-<p><strong>กฎ 1NF:</strong> แต่ละเซลล์ต้องเก็บค่าเดียวเท่านั้น ห้ามมีลิสต์หลายรายการในช่องเดียว เราจึงแยก <code>tx_date</code> และ <code>tx_type</code> ออกมาเป็นแถวละ 1 รายการ โดยให้ Primary Key ร่วมคือ <code>(deed_no, tx_date)</code></p>
+<h3>3.4 ขั้นที่ 1 (1NF): ทำให้ทุกช่องเป็น Atomic Value ไม่มีกลุ่มซ้ำ</h3>
+<p><strong>กฎ 1NF:</strong> ทุกเซลล์ต้องเก็บค่าเดียวเท่านั้น (Atomic) ห้ามมีลิสต์หลายรายการในช่องเดียว เราจึงแยก <code>tx_date</code> และ <code>tx_type</code> ออกมาเป็นแถวละ 1 รายการ โดยให้ Primary Key ร่วม (Composite PK) คือ <code>(deed_no, tx_date)</code></p>
 <div class="table-wrap">
   <table>
     <caption>ผลลัพธ์หลังทำ 1NF: แยกแต่ละรายการธุรกรรมเป็นแถวเดี่ยว ค่าในเซลล์เป็น Atomic</caption>
@@ -248,43 +367,43 @@
   </table>
 </div>
 
-<h3>ขั้นที่ 2 (2NF - Second Normal Form): ขจัด Partial Dependency</h3>
-<p><strong>กฎ 2NF:</strong> ต้องเป็น 1NF ก่อน และ<strong>ทุกคอลัมน์ที่ไม่ใช่คีย์ต้องขึ้นอยู่กับ Primary Key ทั้งชุด</strong> ห้ามขึ้นอยู่กับแค่ส่วนใดส่วนหนึ่งของ Composite Key<br>
-<em>ปัญหาที่เจอใน 1NF ด้านบน:</em> PK คือ <code>(deed_no, tx_date)</code> แต่ <code>owner_id, owner_name, office_id, office_name</code> ขึ้นอยู่กับแค่ <code>deed_no</code> ตัวเดียว ไม่ได้ขึ้นอยู่กับ <code>tx_date</code>! เราจึงแตกออกเป็น 2 ตาราง:</p>
+<h3>3.5 ขั้นที่ 2 (2NF): ขจัด Partial Dependency (ห้ามขึ้นกับแค่ครึ่งเดียวของ PK)</h3>
+<p><strong>กฎ 2NF:</strong> ต้องผ่าน 1NF ก่อน และ<strong>ทุกคอลัมน์ที่ไม่ใช่คีย์ต้องขึ้นอยู่กับ Primary Key ทั้งชุด</strong> ห้ามขึ้นอยู่กับแค่ส่วนใดส่วนหนึ่งของ Composite PK<br>
+<em>วิเคราะห์ปัญหาใน 1NF ด้านบน:</em> PK คือ <code>(deed_no, tx_date)</code> แต่คอลัมน์ <code>owner_id, owner_name, office_id, office_name</code> ขึ้นอยู่กับแค่ <code>deed_no</code> ตัวเดียว ไม่ได้ขึ้นอยู่กับ <code>tx_date</code> เลย (จึงทำให้ข้อมูลนายสมชายและ สนง.จตุจักร ซ้ำทุกครั้งที่โฉนดนี้ทำธุรกรรม)! เราจึงแตกออกเป็น 2 ตาราง:</p>
 <div class="table-wrap">
   <table>
     <caption>ผลลัพธ์หลังทำ 2NF: แยกตาราง PLOTS_2NF และ TRANSACTIONS_2NF ออกจากกัน</caption>
     <thead>
       <tr>
-        <th scope="col">ตารางที่แยกได้ (2NF)</th>
+        <th scope="col">ตาราง (2NF)</th>
         <th scope="col">โครงสร้างคอลัมน์ (PK / FK)</th>
-        <th scope="col">ความหมาย</th>
+        <th scope="col">สถานะและความหมาย</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th scope="row">TRANSACTIONS_2NF</th>
         <td><code>tx_id (PK), deed_no (FK), tx_date, tx_type</code></td>
-        <td>เก็บประวัติธุรกรรมแต่ละครั้ง ไม่ต้องเก็บชื่อเจ้าของหรือสำนักงานซ้ำ</td>
+        <td>เก็บประวัติธุรกรรมแต่ละครั้ง ไม่ต้องเก็บชื่อเจ้าของหรือสำนักงานซ้ำแล้ว</td>
       </tr>
       <tr>
         <th scope="row">PLOTS_2NF</th>
         <td><code>deed_no (PK), owner_id, owner_name, office_id, office_name</code></td>
-        <td>ยังเหลือปัญหา Transitive Dependency เพราะ <code>office_name</code> ขึ้นกับ <code>office_id</code>!</td>
+        <td>ไม่มี Partial Dependency แล้ว แต่ยังติด <strong>Transitive Dependency</strong> เพราะ <code>office_name</code> ขึ้นกับ <code>office_id</code>!</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<h3>ขั้นที่ 3 (3NF - Third Normal Form): ขจัด Transitive Dependency (After สุดท้าย)</h3>
-<p><strong>กฎ 3NF:</strong> ต้องเป็น 2NF ก่อน และ<strong>ห้ามคอลัมน์ที่ไม่ใช่คีย์ไปขึ้นต่อกันเอง (Transitive Dependency: A → B → C)</strong><br>
-ใน <code>PLOTS_2NF</code> จะเห็นว่า <code>deed_no → office_id → office_name</code> และ <code>deed_no → owner_id → owner_name</code> จึงต้องแยก <code>USERS</code> และ <code>LAND_OFFICES</code> ออกไปเป็นตารางอิสระ ได้โครงสร้าง <strong>3NF ที่สะอาดพร้อมใช้งานจริง</strong> ดังนี้:</p>
+<h3>3.6 ขั้นที่ 3 (3NF): ขจัด Transitive Dependency (After สุดท้ายพร้อมใช้งาน)</h3>
+<p><strong>กฎ 3NF:</strong> ต้องผ่าน 2NF ก่อน และ<strong>ห้ามคอลัมน์ที่ไม่ใช่คีย์ไปขึ้นต่อกันเองเป็นลูกโซ่ (<code>A → B → C</code>)</strong><br>
+ใน <code>PLOTS_2NF</code> จะเห็นลูกโซ่ <code>deed_no → office_id → office_name</code> และ <code>deed_no → owner_id → owner_name</code> จึงต้องดึงข้อมูลคน (<code>USERS</code>) และข้อมูลสำนักงาน (<code>LAND_OFFICES</code>) แยกออกไปเป็นตารางอิสระ ได้โครงสร้าง <strong>3NF ที่สะอาด ปลอด Anomaly ทั้ง 3 ข้อ</strong> ดังนี้ครับ:</p>
 <div class="table-wrap">
   <table>
     <caption>After (3NF): ตารางอิสระ 4 ตารางที่ปราศจากความซ้ำซ้อนและ Anomaly</caption>
     <thead>
       <tr>
-        <th scope="col">ชื่อตาราง (3NF)</th>
+        <th scope="col">ตาราง (3NF)</th>
         <th scope="col">คอลัมน์หลัก</th>
         <th scope="col">การเชื่อมโยง</th>
       </tr>
@@ -293,12 +412,12 @@
       <tr>
         <th scope="row">LAND_OFFICES</th>
         <td><code>office_id (PK), office_name, province</code></td>
-        <td>1 สำนักงาน มีหลายแปลง</td>
+        <td>1 สำนักงาน มีหลายแปลง (เพิ่มสำนักงานใหม่ได้แม้ยังไม่มีแปลง!)</td>
       </tr>
       <tr>
         <th scope="row">USERS</th>
         <td><code>user_id (PK), full_name, citizen_type</code></td>
-        <td>1 เจ้าของ ถือครองได้หลายแปลง</td>
+        <td>1 เจ้าของ ถือครองได้หลายแปลง (แก้ชื่อจุดเดียวตรงทั้งระบบ!)</td>
       </tr>
       <tr>
         <th scope="row">LAND_PLOTS</th>
@@ -312,30 +431,95 @@
       </tr>
     </tbody>
   </table>
+</div>
+
+<div class="callout callout-tip">
+  <strong><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> คาถาจำสั้น 1NF–3NF ก่อนเข้าห้องสอบ:</strong>
+  <strong>1NF</strong> = ตัดกลุ่มซ้ำ ให้ช่องละ 1 ค่า (Atomic) → <strong>2NF</strong> = ตัดการพึ่งแค่ครึ่งคีย์ (Partial) → <strong>3NF</strong> = ตัดการพึ่งกันเองนอกคีย์ (Transitive)
 </div>`
       },
       {
         id: 'sql-select-where',
         title: '4. คำสั่ง SQL พื้นฐาน: DDL, DML, DQL และ SELECT / WHERE / ORDER BY',
+        analogyBox: {
+          title: 'เปรียบเทียบให้เห็นภาพ: ภาษาสั่งงานบรรณารักษ์ฐานข้อมูล',
+          body: '<strong>SQL (Structured Query Language)</strong> คือ "ภาษามาตรฐานกลาง" ที่เราใช้พูดคุยกับระบบ RDBMS ทุกยี่ห้อ ไม่ว่าจะเป็นการสร้างตู้เอกสารใหม่ (<strong>DDL</strong>), การเพิ่ม/แก้ไข/ลบใบทะเบียน (<strong>DML</strong>), การเขียนใบเบิกขอค้นหาข้อมูลตามเงื่อนไข (<strong>DQL</strong>), การแจกกุญแจสิทธิ์ (<strong>DCL</strong>) หรือการสั่งยืนยัน/ยกเลิกภารกิจ (<strong>TCL</strong>) ครับ'
+        },
         bodyHtml: `
-<p>ภาษา <strong>SQL (Structured Query Language)</strong> แบ่งออกเป็นหมวดหมู่ที่มักถูกถามในข้อสอบ ดังนี้ครับ:</p>
+<h3>4.1 5 หมวดคำสั่งของภาษา SQL (DDL / DML / DQL / DCL / TCL) พร้อมตัวอย่างจริง</h3>
 <ul>
-  <li><strong>DDL (Data Definition Language):</strong> จัดการโครงสร้างตาราง — <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>, <code>TRUNCATE</code> (สังเกต: <code>TRUNCATE</code> ลบข้อมูลทั้งตารางเร็วและคืนพื้นที่ แต่โครงสร้างตารางยังอยู่ ส่วน <code>DROP</code> ลบทิ้งทั้งตาราง)</li>
-  <li><strong>DML (Data Manipulation Language):</strong> จัดการข้อมูลในแถว — <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> (<code>DELETE</code> ลบเฉพาะแถวที่ตรง <code>WHERE</code> และ <code>ROLLBACK</code> ได้)</li>
-  <li><strong>DQL (Data Query Language):</strong> สอบถามดึงข้อมูล — <code>SELECT</code></li>
-  <li><strong>DCL (Data Control Language):</strong> กำหนดสิทธิ์ — <code>GRANT</code>, <code>REVOKE</code></li>
-  <li><strong>TCL (Transaction Control Language):</strong> ควบคุมทรานแซกชัน — <code>COMMIT</code>, <code>ROLLBACK</code>, <code>SAVEPOINT</code></li>
+  <li><strong>DDL (Data Definition Language) — จัดการ "โครงสร้างตาราง":</strong> ใช้สร้าง แก้ไข หรือลบตัวตาราง ได้แก่ <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>, <code>TRUNCATE</code>
+    <pre tabindex="0"><code>CREATE TABLE land_offices (office_id INT PRIMARY KEY, office_name TEXT);
+ALTER TABLE land_offices ADD COLUMN province TEXT;</code></pre>
+  </li>
+  <li><strong>DML (Data Manipulation Language) — จัดการ "ข้อมูลในแถว":</strong> ใช้เพิ่ม แก้ไข หรือลบแถวข้อมูล ได้แก่ <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>
+    <pre tabindex="0"><code>INSERT INTO land_offices (office_id, office_name) VALUES (9, 'สนง.ที่ดินกระบี่');
+UPDATE land_plots SET appraised_price_per_wah = 150000 WHERE plot_id = 2;
+DELETE FROM transactions WHERE tx_id = 114;  -- อย่าลืม WHERE ไม่งั้นลบเกลี้ยงทั้งตาราง!</code></pre>
+  </li>
+  <li><strong>DQL (Data Query Language) — สอบถามดึงข้อมูลมาแสดง:</strong> ได้แก่คำสั่ง <code>SELECT</code>
+    <pre tabindex="0"><code>SELECT deed_no, appraised_price_per_wah FROM land_plots WHERE deed_type = 'น.ส.4 จ.';</code></pre>
+  </li>
+  <li><strong>DCL (Data Control Language) — กำหนดสิทธิ์ผู้ใช้:</strong> ได้แก่ <code>GRANT</code> (ให้สิทธิ์) และ <code>REVOKE</code> (ถอนสิทธิ์)
+    <pre tabindex="0"><code>GRANT SELECT, INSERT ON land_plots TO officer_role;
+REVOKE DELETE ON land_plots FROM officer_role;</code></pre>
+  </li>
+  <li><strong>TCL (Transaction Control Language) — ควบคุมทรานแซกชัน:</strong> ได้แก่ <code>COMMIT</code>, <code>ROLLBACK</code>, <code>SAVEPOINT</code></li>
 </ul>
 
-<h3>ลำดับการทำงานจริงของ SQL (Query Execution Order)</h3>
-<p>ข้อสอบชอบหลอกเรื่องนี้มาก! ถึงแม้เราจะเขียน <code>SELECT</code> เป็นคำแรก แต่เครื่องยนต์ฐานข้อมูลประมวลผลจริงตามลำดับนี้:</p>
-<pre tabindex="0"><code>1. FROM / JOIN    -- ดึงตารางและเชื่อมตาราง
-2. WHERE          -- กรองแถวดิบทีละแถว (ห้ามใช้ Aggregate เช่น COUNT/SUM ใน WHERE!)
+<div class="table-wrap">
+  <table>
+    <caption>เปรียบเทียบคำสั่งลบยอดฮิต: DELETE vs TRUNCATE vs DROP (ออกสอบบ่อยมาก!)</caption>
+    <thead>
+      <tr>
+        <th scope="col">คำสั่ง</th>
+        <th scope="col">หมวด</th>
+        <th scope="col">สิ่งที่หายไป</th>
+        <th scope="col">ระบุ WHERE / กู้คืน ROLLBACK</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">DELETE</th>
+        <td>DML</td>
+        <td>ลบเฉพาะแถวที่ระบุ (โครงตารางยังอยู่)</td>
+        <td>ใส่ <code>WHERE</code> ได้ / <strong><code>ROLLBACK</code> ได้</strong></td>
+      </tr>
+      <tr>
+        <th scope="row">TRUNCATE</th>
+        <td>DDL</td>
+        <td>ล้างข้อมูลทั้งตารางเกลี้ยง (โครงตารางยังอยู่)</td>
+        <td>ใส่ <code>WHERE</code> ไม่ได้ / เร็วกว่า DELETE / มัก Rollback ไม่ได้</td>
+      </tr>
+      <tr>
+        <th scope="row">DROP</th>
+        <td>DDL</td>
+        <td>ลบทิ้งทั้งข้อมูล <strong>และตัวโครงสร้างตารางหายหมด</strong></td>
+        <td>ใส่ <code>WHERE</code> ไม่ได้ / ถูกลบออกจากระบบเลย</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>4.2 ตัวช่วยกรองเงื่อนไขใน <code>WHERE</code> ที่ต้องใช้เป็น</h3>
+<p>คำสั่ง <code>WHERE</code> ใช้คัดกรองเฉพาะแถวที่ตรงเงื่อนไขก่อนแสดงผล โดยตัวดำเนินการสำคัญที่ออกสอบบ่อย ได้แก่:</p>
+<ul>
+  <li><strong>เปรียบเทียบพื้นฐาน:</strong> <code>=</code> (เท่ากับ), <code>!=</code> หรือ <code>&lt;&gt;</code> (ไม่เท่ากับ), <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code> ร่วมกับตัวเชื่อม <code>AND</code> (ต้องจริงทั้งคู่), <code>OR</code> (จริงอย่างน้อยหนึ่ง), <code>NOT</code></li>
+  <li><strong><code>LIKE</code> (ค้นหาข้อความแบบเทียบแพตเทิร์น):</strong> ใช้คู่กับ <code>%</code> (แทนตัวอักษรกี่ตัวก็ได้) และ <code>_</code> (แทนตัวอักษร 1 ตัวพอดี) เช่น <code>WHERE tx_date LIKE '2025-%'</code> (ขึ้นต้นด้วย 2025-)</li>
+  <li><strong><code>IN</code> (ตรงกับค่าใดค่าหนึ่งในรายการ):</strong> เขียนสั้นกว่าการใช้ <code>OR</code> ยาวๆ เช่น <code>WHERE deed_type IN ('น.ส.4 จ.', 'อ.ช.2')</code></li>
+  <li><strong><code>BETWEEN</code> (อยู่ในช่วงแบบรวมหัวและท้าย):</strong> เช่น <code>WHERE fee_amount BETWEEN 10000 AND 50000</code> (เท่ากับ <code>&gt;= 10000 AND &lt;= 50000</code>)</li>
+  <li><strong><code>IS NULL</code> / <code>IS NOT NULL</code>:</strong> ใช้ตรวจหาช่องที่ยังไม่กรอกข้อมูล (ห้ามเขียน <code>= NULL</code> เด็ดขาด)</li>
+</ul>
+
+<h3>4.3 ลำดับการทำงานจริงของ SQL (Query Execution Order)</h3>
+<p>ข้อสอบชอบหลอกเรื่องนี้มาก! ถึงแม้เวลาพิมพ์โค้ดเราจะขึ้นต้นด้วย <code>SELECT</code> เป็นบรรทัดแรก แต่ระบบฐานข้อมูลจะประมวลผลจริงตามลำดับ 7 ขั้นนี้ครับ:</p>
+<pre tabindex="0"><code>1. FROM / JOIN    -- ดึงตารางต้นทางและเชื่อมตารางก่อน
+2. WHERE          -- กรองแถวดิบทีละแถว (ยังใช้ชื่อ Alias ใน SELECT หรือ COUNT/SUM ไม่ได้!)
 3. GROUP BY       -- จัดกลุ่มแถวตามคอลัมน์ที่ระบุ
 4. HAVING         -- กรอง "กลุ่ม" หลังจากจัดกลุ่มและคำนวณ Aggregate แล้ว
-5. SELECT         -- เลือกคอลัมน์และตั้งชื่อเล่น (Alias AS)
+5. SELECT         -- เลือกคอลัมน์ คำนวณสูตร และตั้งชื่อเล่น (Alias AS)
 6. ORDER BY       -- เรียงลำดับผลลัพธ์ (ASC น้อยไปมาก / DESC มากไปน้อย)
-7. LIMIT          -- ตัดเอาเฉพาะจำนวนแถวที่ต้องการ</code></pre>
+7. LIMIT          -- ตัดเอาเฉพาะจำนวนแถวสูงสุดที่ต้องการ</code></pre>
 
 <p>ลองกดปุ่ม <strong>รันคำสั่ง SQL</strong> ด้านล่างเพื่อทดสอบดึง 5 แปลงที่ดินที่มีราคาประเมินต่อตารางวาสูงสุดจากตาราง <code>land_plots</code> ได้เลยครับ (หรือลองแก้เพิ่มเงื่อนไข <code>WHERE deed_type = 'น.ส.4 จ.'</code> ดูด้วยตัวเอง!)</p>`,
         sqlTryIt: {
@@ -348,9 +532,60 @@
       {
         id: 'sql-join-aggregate',
         title: '5. การเชื่อมตาราง (JOIN) และฟังก์ชันสรุปผล (GROUP BY / HAVING)',
+        analogyBox: {
+          title: 'เปรียบเทียบให้เห็นภาพ: INNER JOIN (จับคู่เฉพาะคนมีคู่) vs LEFT JOIN (เช็กชื่อฝั่งซ้ายครบทุกคน)',
+          body: 'ลองนึกว่ามีโต๊ะรายชื่อสำนักงานอยู่ฝั่งซ้าย และโต๊ะแปลงที่ดินอยู่ฝั่งขวา:<br>• <strong>INNER JOIN:</strong> ยอมให้เข้าห้องเฉพาะคู่ที่จับมือกันครบทั้งสองฝั่ง (สำนักงานไหนยังไม่มีแปลงที่ดินในระบบ จะถูกคัดออกไม่แสดง!)<br>• <strong>LEFT JOIN:</strong> รักษา<strong>รายชื่อฝั่งซ้ายไว้ครบ 100%</strong> ใครมีคู่ก็จับคู่มาแสดง ส่วนสำนักงานที่ยังไม่มีแปลงที่ดิน ก็ยังแสดงชื่ออยู่โดยช่องข้อมูลแปลงฝั่งขวาจะเป็น <code>NULL</code> ครับ!'
+        },
         bodyHtml: `
-<p>เมื่อเรา Normalize ตารางแยกออกจากกันแล้ว เวลาต้องการดูรายงานที่แสดงทั้ง<em>ชื่อเจ้าของ</em>และ<em>เลขโฉนด</em>พร้อมกัน เราต้องใช้คำสั่ง <strong>JOIN</strong> ซึ่งมี 4 แบบหลักที่ออกสอบบ่อย:</p>
+<h3>5.1 JOIN คืออะไร? ดูตัวอย่าง Input และ Output ของ <code>INNER JOIN</code> vs <code>LEFT JOIN</code></h3>
+<p>หลังจากที่เราทำ Normalization แยกข้อมูลออกเป็นหลายตารางแล้ว (เช่น <code>land_plots</code> เก็บแค่ตัวเลข <code>office_id</code> ไม่ได้เก็บชื่อสำนักงาน) เวลาต้องการออกรายงานที่แสดงทั้ง<em>ชื่อสำนักงาน</em>และ<em>เลขโฉนด</em>พร้อมกัน เราจึงต้องใช้คำสั่ง <strong>JOIN</strong> มาจับคู่แถวจากสองตารางเข้าด้วยกันครับ</p>
+<p>เพื่อให้เห็นภาพชัดแบบไม่สับสน ลองดูข้อมูลจำลองขนาดเล็ก 2 ตารางนี้ (สังเกตว่า <strong>สำนักงานรหัส 8 สงขลา ยังไม่มีแปลงที่ดิน</strong> ส่วนอีก 2 แห่งมีแปลงจับคู่):</p>
 
+<div class="table-wrap">
+  <table>
+    <caption>ตาราง Input ตัวอย่าง: MINI_OFFICES (ซ้าย) และ MINI_PLOTS (ขวา)</caption>
+    <thead>
+      <tr>
+        <th scope="col">MINI_OFFICES (ซ้าย)</th>
+        <th scope="col">MINI_PLOTS (ขวา)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>office_id = 1</code> | พระโขนง<br><code>office_id = 2</code> | นนทบุรี<br><code>office_id = 8</code> | สงขลา <em>(ยังไม่มีแปลง)</em></td>
+        <td><code>plot_id = 10</code> | น.ส.4จ-104 | <code>office_id = 1</code><br><code>plot_id = 11</code> | น.ส.4จ-331 | <code>office_id = 2</code></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <caption>เปรียบเทียบผลลัพธ์จริง: INNER JOIN (ได้ 2 แถว) vs LEFT JOIN (ได้ 3 แถวพร้อม NULL)</caption>
+    <thead>
+      <tr>
+        <th scope="col">ผลลัพธ์ของ INNER JOIN</th>
+        <th scope="col">ผลลัพธ์ของ LEFT JOIN (MINI_OFFICES อยู่ซ้าย)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          1) พระโขนง — น.ส.4จ-104<br>
+          2) นนทบุรี — น.ส.4จ-331<br>
+          <em>(สงขลาหายไป เพราะไม่มีคู่ใน MINI_PLOTS!)</em>
+        </td>
+        <td>
+          1) พระโขนง — น.ส.4จ-104<br>
+          2) นนทบุรี — น.ส.4จ-331<br>
+          3) <strong>สงขลา — <code>NULL</code></strong> <em>(ฝั่งซ้ายอยู่ครบ!)</em>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>5.2 ตารางเปรียบเทียบคำสั่ง JOIN ทั้ง 4 รูปแบบ</h3>
 <div class="table-wrap">
   <table>
     <caption>เปรียบเทียบคำสั่ง JOIN ทั้ง 4 รูปแบบใน SQL</caption>
@@ -365,15 +600,15 @@
       <tr>
         <th scope="row">INNER JOIN</th>
         <td>คืนค่าเฉพาะแถวที่จับคู่คีย์ตรงกันได้ <strong>ทั้งสองตาราง</strong></td>
-        <td>ดูรายการแปลงที่ดินที่มีข้อมูลเจ้าของจับคู่ถูกต้อง</td>
+        <td>ดูรายการแปลงที่ดินที่มีข้อมูลเจ้าของและสำนักงานจับคู่ถูกต้อง</td>
       </tr>
       <tr>
-        <th scope="row">LEFT (OUTER) JOIN</th>
-        <td>คืนค่าตาราง <strong>ฝั่งซ้ายทั้งหมด</strong> แม้ฝั่งขวาไม่มีคู่ (ช่องฝั่งขวาจะเป็น <code>NULL</code>)</td>
-        <td>ดูรายชื่อผู้ใช้ทั้งหมด รวมถึงคนที่ <em>ยังไม่มี</em> แปลงที่ดิน</td>
+        <th scope="row">LEFT JOIN</th>
+        <td>คืนค่าตาราง <strong>ฝั่งซ้ายทั้งหมด</strong> แม้ฝั่งขวาไม่มีคู่ (ฝั่งขวาจะเป็น <code>NULL</code>)</td>
+        <td>ดูรายชื่อสำนักงานหรือผู้ใช้ทั้งหมด รวมถึงรายที่ <em>ยังไม่มี</em> แปลงที่ดิน</td>
       </tr>
       <tr>
-        <th scope="row">RIGHT (OUTER) JOIN</th>
+        <th scope="row">RIGHT JOIN</th>
         <td>คืนค่าตาราง <strong>ฝั่งขวาทั้งหมด</strong> แม้ฝั่งซ้ายไม่มีคู่</td>
         <td>ตรงข้ามกับ LEFT JOIN (นิยมเขียนสลับฝั่งใช้ LEFT JOIN แทนเพื่ออ่านง่าย)</td>
       </tr>
@@ -386,8 +621,19 @@
   </table>
 </div>
 
-<h3>Aggregate Functions &amp; ตัวอย่าง JOIN หลายตาราง</h3>
-<p>ฟังก์ชันรวมกลุ่มพื้นฐานมี 5 ตัวคือ <code>COUNT()</code>, <code>SUM()</code>, <code>AVG()</code>, <code>MAX()</code>, <code>MIN()</code> เมื่อใช้คู่กับคอลัมน์ปกติใน <code>SELECT</code> ต้องใส่คอลัมน์ปกตินั้นใน <code>GROUP BY</code> เสมอ และหากต้องการกรองผลลัพธ์ของฟังก์ชันรวมกลุ่ม (เช่น เอาเฉพาะสำนักงานที่มีแปลงที่ดินตั้งแต่ 2 แปลงขึ้นไป) ต้องใช้ <strong><code>HAVING COUNT(p.plot_id) &gt;= 2</code></strong> ห้ามใช้ <code>WHERE</code>!</p>
+<h3>5.3 Aggregate Functions, <code>GROUP BY</code> และ <code>HAVING</code> (vs <code>WHERE</code>)</h3>
+<p><strong>Aggregate Functions (ฟังก์ชันสรุปรวมกลุ่ม)</strong> มี 5 ตัวพื้นฐานคือ <code>COUNT()</code> (นับจำนวน), <code>SUM()</code> (ผลรวม), <code>AVG()</code> (ค่าเฉลี่ย), <code>MAX()</code> (สูงสุด), <code>MIN()</code> (ต่ำสุด) ซึ่งจะยุบหลายแถวในกลุ่มเดียวกันให้เหลือ 1 คำตอบ โดยมีกฎเหล็ก 3 ข้อที่ออกสอบประจำครับ:</p>
+<ol>
+  <li><strong>กฎของ <code>GROUP BY</code>:</strong> เมื่อนำคอลัมน์ปกติ (เช่น <code>o.office_name</code>) มาแสดงคู่กับฟังก์ชันสรุปผล (เช่น <code>COUNT(p.plot_id)</code>) ใน <code>SELECT</code> ต้องใส่คอลัมน์ปกตินั้นไว้หลัง <code>GROUP BY</code> เสมอ</li>
+  <li><strong>ข้อแตกต่างของ <code>COUNT(*)</code> vs <code>COUNT(column)</code>:</strong> <code>COUNT(*)</code> นับทุกแถวรวมแถวที่เป็น <code>NULL</code> ด้วย ส่วน <code>COUNT(p.plot_id)</code> จะนับเฉพาะแถวที่<strong>ไม่เป็น <code>NULL</code></strong>! ดังนั้นถ้าทำ <code>LEFT JOIN</code> เพื่อนับจำนวนแปลงของสำนักงานที่ยังไม่มีแปลงเลย ต้องใช้ <code>COUNT(p.plot_id)</code> จึงจะได้เลข <code>0</code> (ถ้าเผลอใช้ <code>COUNT(*)</code> จะได้ <code>1</code> เพราะแถวสงขลายังมีอยู่!)</li>
+  <li><strong><code>WHERE</code> vs <code>HAVING</code>:</strong> <code>WHERE</code> ใช้กรอง "แถวดิบ" <em>ก่อน</em>จัดกลุ่ม (ห้ามใส่ <code>COUNT</code> หรือ <code>SUM</code> ใน <code>WHERE</code>!) ส่วน <strong><code>HAVING</code></strong> ใช้กรอง "ทั้งกลุ่ม" <em>หลัง</em>จัดกลุ่มและคำนวณ Aggregate แล้ว เช่น เอาเฉพาะสำนักงานที่มีตั้งแต่ 2 แปลงขึ้นไป:
+    <pre tabindex="0"><code>SELECT o.office_name, COUNT(p.plot_id) AS total_plots
+FROM land_offices o
+LEFT JOIN land_plots p ON o.office_id = p.office_id
+GROUP BY o.office_name
+HAVING COUNT(p.plot_id) &gt;= 2;</code></pre>
+  </li>
+</ol>
 
 <p>ด้านล่างนี้เป็นตัวอย่างคิวรีจริงแบบ <strong>INNER JOIN</strong> เชื่อมตาราง <code>land_plots</code> เข้ากับ <code>users</code> และ <code>land_offices</code> กดรันดูผลลัพธ์ได้เลยครับ:</p>`,
         sqlTryIt: {

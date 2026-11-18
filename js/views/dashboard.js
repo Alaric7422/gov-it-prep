@@ -114,6 +114,14 @@
     var mockTotal = mockExam && Array.isArray(mockExam.questions) ? mockExam.questions.length : 50;
     var mockPct = bestMock && mockTotal ? Math.round((bestMock.score / (bestMock.total || mockTotal)) * 100) : 0;
 
+    var diagramsGuide = registry.diagramsGuide || {};
+    var diagramCatCount = Array.isArray(diagramsGuide.categories) ? diagramsGuide.categories.length : 6;
+    var diagramExamCount = Array.isArray(diagramsGuide.writtenExams) ? diagramsGuide.writtenExams.length : 6;
+
+    var sqlGuideData = registry.sqlGuide || {};
+    var sqlChapterCount = Array.isArray(sqlGuideData.chapters) ? sqlGuideData.chapters.length : 8;
+    var sqlExamCount = Array.isArray(sqlGuideData.writtenExams) ? sqlGuideData.writtenExams.length : 6;
+
     // Dynamic agency progress cards (DOL and any future agencies)
     var agencyProgressCardsHtml = agencies
       .map(function (ag) {
@@ -231,7 +239,7 @@
       '</div>' +
       '<h1 id="dash-hero-title">ติวสอบนักวิชาการคอมพิวเตอร์ปฏิบัติการ แบบเข้าใจง่าย ใช้งานได้จริง</h1>' +
       '<p class="text-muted">' +
-      'ปูพื้นฐานวิทยาการคอมพิวเตอร์ 5 บทหลัก เจาะลึกกฎหมายที่ดิน เอกสารสิทธิ์ และ GIS กรมที่ดิน 3 บท พร้อมลานซ้อม SQL จริง แฟลชการ์ด 45 ใบ และข้อสอบจำลอง 50 ข้อ' +
+      'ปูพื้นฐานวิทยาการคอมพิวเตอร์ 5 บทหลัก เจาะลึกกฎหมายที่ดิน เอกสารสิทธิ์ และ GIS กรมที่ดิน 3 บท พร้อมคู่มือเจาะลึก Diagram &amp; คำสั่ง SQL สำหรับข้อเขียน ลานซ้อม SQL จริง แฟลชการ์ด 45 ใบ และข้อสอบจำลอง 50 ข้อ' +
       '</p>' +
       '<div class="flex flex-wrap gap-3 pt-1">' +
       (nextLesson
@@ -242,8 +250,11 @@
           escapeHtml(primaryCtaLabel) +
           '</a>'
         : '') +
-      '<a href="#sql-sandbox" class="btn btn-secondary">' +
-      '<i class="fa-solid fa-database" aria-hidden="true"></i> ลานซ้อม SQL' +
+      '<a href="#diagrams-lab" class="btn btn-secondary">' +
+      '<i class="fa-solid fa-diagram-project" aria-hidden="true"></i> คู่มือ Diagram ข้อเขียน' +
+      '</a>' +
+      '<a href="#sql-guide" class="btn btn-secondary">' +
+      '<i class="fa-solid fa-terminal" aria-hidden="true"></i> คู่มือคำสั่ง SQL' +
       '</a>' +
       '<a href="#mock-exam" class="btn btn-accent">' +
       '<i class="fa-solid fa-stopwatch" aria-hidden="true"></i> ข้อสอบจำลอง 50 ข้อ' +
@@ -392,10 +403,30 @@
       '<i class="fa-solid fa-toolbox text-primary-token" aria-hidden="true"></i>' +
       '<span>เครื่องมือฝึกปฏิบัติและคู่มือใช้งาน</span>' +
       '</h2>' +
-      '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">' +
+      '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">' +
+      '<a href="#diagrams-lab" class="module-card no-underline text-inherit">' +
+      '<span class="badge-pill badge-accent self-start"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> ' +
+      diagramCatCount +
+      ' หมวด • ' +
+      diagramExamCount +
+      ' โจทย์ข้อเขียน</span>' +
+      '<h3 class="text-base font-semibold">คู่มือ Diagram &amp; ออกแบบระบบ</h3>' +
+      '<p class="text-sm text-muted">เจาะลึก Flowchart, DFD, ERD &amp; 3NF, Use Case, Sequence/Class และสถาปัตยกรรมระบบ พร้อมวิธีเขียนสอบ</p>' +
+      '</a>' +
+      '<a href="#sql-guide" class="module-card no-underline text-inherit">' +
+      '<span class="badge-pill badge-accent self-start"><i class="fa-solid fa-terminal" aria-hidden="true"></i> ' +
+      sqlChapterCount +
+      ' บท • ' +
+      sqlExamCount +
+      ' โจทย์ข้อเขียน</span>' +
+      '<h3 class="text-base font-semibold">คู่มือคำสั่ง SQL ครบชุด</h3>' +
+      '<p class="text-sm text-muted">สรุปไวยากรณ์ตั้งแต่ Data Types, DDL/DML, SELECT, WHERE, GROUP BY, JOIN ถึง Subquery พร้อมรันจริง</p>' +
+      '</a>' +
       '<a href="#flashcards" class="module-card no-underline text-inherit">' +
-      '<span class="badge-pill badge-primary self-start"><i class="fa-solid fa-clone" aria-hidden="true"></i> 45 ใบ</span>' +
-      '<h3 class="text-base font-semibold">แฟลชการ์ดทบทวนความจำ</h3>' +
+      '<span class="badge-pill badge-primary self-start"><i class="fa-solid fa-clone" aria-hidden="true"></i> ' +
+      fcTotal +
+      ' ใบ</span>' +
+      '<h3 class="text-base font-semibold">แฟลชการ์ด 45 ใบ</h3>' +
       '<p class="text-sm text-muted">พลิกการ์ด 3 มิติท่อง Port, คำย่อ IT/พ.ร.บ.คอมฯ, เอกสารสิทธิ์ และ GIS</p>' +
       '</a>' +
       '<a href="#sql-sandbox" class="module-card no-underline text-inherit">' +
@@ -404,8 +435,10 @@
       '<p class="text-sm text-muted">เขียนคำสั่ง SQL จริงบนฐานข้อมูลจำลอง 4 ตาราง พร้อมตรวจคำตอบทันที</p>' +
       '</a>' +
       '<a href="#mock-exam" class="module-card no-underline text-inherit">' +
-      '<span class="badge-pill badge-accent self-start"><i class="fa-solid fa-stopwatch" aria-hidden="true"></i> 50 ข้อ • 60 นาที</span>' +
-      '<h3 class="text-base font-semibold">ห้องสอบจำลองเสมือนจริง</h3>' +
+      '<span class="badge-pill badge-accent self-start"><i class="fa-solid fa-stopwatch" aria-hidden="true"></i> ' +
+      mockTotal +
+      ' ข้อ • 60 นาที</span>' +
+      '<h3 class="text-base font-semibold">ข้อสอบจำลอง 50 ข้อ</h3>' +
       '<p class="text-sm text-muted">จำลองสอบจับเวลาหรือโหมดฝึกทำ พร้อมวิเคราะห์จุดอ่อนแยกตามหัวข้อ</p>' +
       '</a>' +
       '<a href="#guide" class="module-card no-underline text-inherit">' +
